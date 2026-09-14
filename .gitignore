@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+
+# Environment variables / secrets
+.env
+.env.*
+!.env.example
+
+# Build output
+dist/
+build/
+.vite/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE / editor
+.vscode/
+.idea/
+
+# Prisma generated files
+prisma/generated/
+
+# Testing / coverage
+coverage/
+
+# Temporary files
+tmp/
+temp/
+# AI/editor generated project instructions
+server/.agents/
+server/.claude/
+server/.windsurf/

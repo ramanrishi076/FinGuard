@@ -2,6 +2,7 @@ const authRoutes = require("./routes/authRoutes");
 const express = require("express");
 const cors = require("cors");
 const prisma = require("./lib/prisma");
+const authenticateToken = require("./middleware/authMiddleware");
 
 const app = express();
 
@@ -43,6 +44,13 @@ app.get("/api/db-test", async (req, res) => {
       message: "Database connection failed!",
     });
   }
+});
+
+app.get("/api/protected", authenticateToken, (req, res) => {
+  res.json({
+    message: "You accessed a protected route!",
+    user: req.user,
+  });
 });
 
 app.use("/api/auth", authRoutes);

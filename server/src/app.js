@@ -1,8 +1,11 @@
 const authRoutes = require("./routes/authRoutes");
+const walletRoutes = require("./routes/walletRoutes");
 const express = require("express");
 const cors = require("cors");
 const prisma = require("./lib/prisma");
 const authenticateToken = require("./middleware/authMiddleware");
+const transactionRoutes = require("./routes/transactionRoutes");
+
 
 const app = express();
 
@@ -54,5 +57,7 @@ app.get("/api/protected", authenticateToken, (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/wallet", walletRoutes);
+app.use("/api/transactions", transactionRoutes);
 
 module.exports = app;

@@ -12,4 +12,65 @@ model User {
   email     String   @unique
   password  String
   createdAt DateTime @default(now())
+
+  sessions Session[]
+  wallet Wallet?
+}
+
+model Session {
+  id           Int       @id @default(autoincrement())
+  userId       Int
+  tokenHash    String    @unique
+  expiresAt    DateTime
+  createdAt    DateTime  @default(now())
+  revokedAt    DateTime?
+
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Wallet {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  balance   BigInt   @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  sentTransactions     Transaction[] @relation("SenderWallet")
+  receivedTransactions Transaction[] @relation("ReceiverWallet")
+}
+
+model Transaction {
+  id               Int      @id @default(autoincrement())
+  senderWalletId   Int?
+  receiverWalletId Int?
+  amount           BigInt
+  type             TransactionType
+  status           TransactionStatus @default(PENDING)
+  description      String?
+  createdAt        DateTime @default(now())
+
+  senderWallet   Wallet? @relation("SenderWallet", fields: [senderWalletId], references: [id])
+  receiverWallet Wallet? @relation("ReceiverWallet", fields: [receiverWalletId], references: [id])
+
+  @@index([senderWalletId])
+  @@index([receiverWalletId])
+  @@index([createdAt])
+}
+
+enum TransactionType {
+  DEPOSIT
+  TRANSFER
+  WITHDRAWAL
+}
+
+enum TransactionStatus {
+  PENDING
+  APPROVED
+  FLAGGED
+  BLOCKED
+  REVIEW
 }

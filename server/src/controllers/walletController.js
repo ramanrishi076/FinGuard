@@ -1,4 +1,5 @@
 const prisma = require("../lib/prisma");
+const { calculateFraudRisk } = require("../services/fraudEngine");
 
 const getWallet = async (req, res) => {
   try {
@@ -173,6 +174,57 @@ const transfer = async (req, res) => {
       });
     }
 
+    const balanceAfterTransaction =
+  senderWallet.balance - transferAmount;
+
+const recentTransactionCount = await prisma.transaction.count({
+  where: {
+    OR: [
+      { senderWalletId: senderWallet.id },
+      { receiverWalletId: senderWallet.id },
+    ],
+    createdAt: {
+      gte: new Date(Date.now() - 10 * 60 * 1000),
+    },
+  },
+});
+
+const fraudResult = calculateFraudRisk({
+  amount: transferAmount,
+  recentTransactionCount,
+  balanceAfterTransaction,
+});
+
+if (fraudResult.decision === "BLOCKED") {
+  const blockedTransaction = await prisma.transaction.create({
+    data: {
+      senderWalletId: senderWallet.id,
+      receiverWalletId: receiverWallet.id,
+      amount: transferAmount,
+      type: "TRANSFER",
+      status: "BLOCKED",
+      description: description || "Blocked wallet transfer",
+    },
+  });
+
+  return res.status(403).json({
+    message: "Transaction blocked due to fraud risk",
+    transaction: {
+      id: blockedTransaction.id,
+      amount: blockedTransaction.amount.toString(),
+      type: blockedTransaction.type,
+      status: blockedTransaction.status,
+      description: blockedTransaction.description,
+      createdAt: blockedTransaction.createdAt,
+    },
+    fraud: {
+      riskScore: fraudResult.riskScore,
+      decision: fraudResult.decision,
+      reasons: fraudResult.reasons,
+    },
+  });
+}
+
     const result = await prisma.$transaction(async (tx) => {
       const updatedSenderWallet = await tx.wallet.update({
         where: {
@@ -202,7 +254,7 @@ const transfer = async (req, res) => {
           receiverWalletId: receiverWallet.id,
           amount: transferAmount,
           type: "TRANSFER",
-          status: "APPROVED",
+          status: fraudResult.decision,
           description: description || "Wallet transfer",
         },
       });
@@ -232,6 +284,11 @@ const transfer = async (req, res) => {
         description: result.transaction.description,
         createdAt: result.transaction.createdAt,
       },
+      fraud: {
+        riskScore: fraudResult.riskScore,
+        decision: fraudResult.decision,
+        reasons: fraudResult.reasons,
+},
     });
   } catch (error) {
     console.error("Transfer error:", error);

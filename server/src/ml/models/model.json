@@ -1,0 +1,64 @@
+{
+  "model_name": "FinGuard Logistic Regression Fraud Detector",
+  "model_type": "LogisticRegression",
+  "version": "1.0.0",
+  "created_at": "2026-09-28T10:12:14.126473+00:00",
+  "is_synthetic_training": true,
+  "features": [
+    "amount",
+    "balance_before",
+    "balance_after",
+    "recent_transaction_count",
+    "amount_to_balance_ratio",
+    "is_night_time"
+  ],
+  "scaler": {
+    "mean": [
+      9418.402217,
+      50081.420844,
+      40663.170579,
+      0.602292,
+      0.197991,
+      0.169792
+    ],
+    "scale": [
+      15222.635205,
+      66530.625498,
+      59979.69308,
+      1.270808,
+      0.254353,
+      0.37545
+    ]
+  },
+  "intercept": -6.521556,
+  "coefficients": [
+    1.02949,
+    0.274033,
+    0.042695,
+    5.519727,
+    3.095219,
+    0.675004
+  ],
+  "feature_coefficients": {
+    "amount": 1.02949,
+    "balance_before": 0.274033,
+    "balance_after": 0.042695,
+    "recent_transaction_count": 5.519727,
+    "amount_to_balance_ratio": 3.095219,
+    "is_night_time": 0.675004
+  },
+  "decision_threshold": 0.5,
+  "evaluation_metrics": {
+    "accuracy": 0.9992,
+    "precision": 0.9945,
+    "recall": 1.0,
+    "f1_score": 0.9972,
+    "roc_auc": 1.0,
+    "confusion_matrix": {
+      "true_negatives": 1019,
+      "false_positives": 1,
+      "false_negatives": 0,
+      "true_positives": 180
+    }
+  }
+}

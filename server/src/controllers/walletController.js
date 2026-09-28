@@ -193,6 +193,7 @@ const fraudResult = calculateFraudRisk({
   amount: transferAmount,
   recentTransactionCount,
   balanceAfterTransaction,
+  balanceBefore: senderWallet.balance,
 });
 
 if (fraudResult.decision === "BLOCKED") {
@@ -221,6 +222,8 @@ if (fraudResult.decision === "BLOCKED") {
       riskScore: fraudResult.riskScore,
       decision: fraudResult.decision,
       reasons: fraudResult.reasons,
+      ruleScore: fraudResult.ruleScore,
+      ml: fraudResult.ml,
     },
   });
 }
@@ -288,7 +291,9 @@ if (fraudResult.decision === "BLOCKED") {
         riskScore: fraudResult.riskScore,
         decision: fraudResult.decision,
         reasons: fraudResult.reasons,
-},
+        ruleScore: fraudResult.ruleScore,
+        ml: fraudResult.ml,
+      },
     });
   } catch (error) {
     console.error("Transfer error:", error);

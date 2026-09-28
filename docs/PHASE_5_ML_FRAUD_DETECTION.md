@@ -13,9 +13,9 @@ FinGuard is a desktop-only secure digital wallet simulation targeted for distrib
 - **Generation Script**: `server/src/ml/generate_dataset.py`
 - **Output Path**: `server/src/ml/data/synthetic_fraud_dataset.csv`
 - **Seed**: Fixed at `42` for 100% reproducibility.
-- **Dataset Size**: 6,000 transactions
-  - **Legitimate (Class 0)**: 5,100 samples (85.0%)
-  - **Fraudulent (Class 1)**: 900 samples (15.0%)
+- **Dataset Size**: 100,000 transactions (1 lakh)
+  - **Legitimate (Class 0)**: 85,000 samples (85.0%)
+  - **Fraudulent (Class 1)**: 15,000 samples (15.0%)
 
 ### Feature Dictionary
 | Feature | Type | Description |
@@ -38,7 +38,7 @@ FinGuard is a desktop-only secure digital wallet simulation targeted for distrib
 
 ## 3. Model Architecture & Selection
 - **Training Pipeline**: `server/src/ml/train_model.py`
-- **Train/Test Split**: 80% Train (4,800 samples) / 20% Test (1,200 samples), stratified by class label.
+- **Train/Test Split**: 80% Train (80,000 samples) / 20% Test (20,000 samples), stratified by class label.
 - **Model Selected**: **Logistic Regression with Standard Scaling** (`StandardScaler` + `LogisticRegression(class_weight='balanced', random_state=42)`).
 
 ### Why Logistic Regression?
@@ -49,31 +49,31 @@ FinGuard is a desktop-only secure digital wallet simulation targeted for distrib
 ### Learned Feature Coefficients
 | Feature | Coefficient | Interpretation |
 |---|---|---|
-| `recent_transaction_count` | `+5.519727` | High velocity indicates automated bot/smurfing attacks |
-| `amount_to_balance_ratio` | `+3.095219` | Draining a high fraction of balance indicates account takeover |
-| `amount` | `+1.029490` | High transfer value carries elevated statistical baseline risk |
-| `is_night_time` | `+0.675004` | Off-hours activity moderately elevates risk score |
-| `balance_before` | `+0.274033` | Relative scale indicator |
-| `balance_after` | `+0.042695` | Residual balance indicator |
-| **Intercept** | `-6.521556` | Strongly negative bias for ordinary everyday transfers |
+| `recent_transaction_count` | `+12.958170` | High velocity indicates automated bot/smurfing attacks |
+| `amount_to_balance_ratio` | `+5.841206` | Draining a high fraction of balance indicates account takeover |
+| `amount` | `+2.111993` | High transfer value carries elevated statistical baseline risk |
+| `balance_before` | `+1.043716` | Relative account scale indicator |
+| `balance_after` | `+0.633405` | Residual balance indicator |
+| `is_night_time` | `+0.538237` | Off-hours activity moderately elevates risk score |
+| **Intercept** | `-14.996412` | Strongly negative bias for ordinary everyday transfers |
 
 ---
 
 ## 4. Honest Model Evaluation
-Evaluation performed strictly on the held-out 20% test partition (1,200 samples: 1,020 legitimate, 180 fraudulent):
+Evaluation performed strictly on the held-out 20% test partition (20,000 samples: 17,000 legitimate, 3,000 fraudulent):
 
 | Metric | Primary Model (Logistic Regression) | Baseline (Decision Tree) | Baseline (Random Forest) |
 |---|---|---|---|
-| **Accuracy** | **0.9992** | 1.0000 | 1.0000 |
-| **Precision** | **0.9945** | 1.0000 | 1.0000 |
+| **Accuracy** | **0.9998** | 0.9917 | 1.0000 |
+| **Precision** | **0.9987** | 1.0000 | 1.0000 |
 | **Recall** | **1.0000** | 1.0000 | 1.0000 |
-| **F1-Score** | **0.9972** | 1.0000 | 1.0000 |
-| **ROC-AUC** | **1.0000** | 1.0000 | 1.0000 |
+| **F1-Score** | **0.9993** | 0.9731 | 1.0000 |
+| **ROC-AUC** | **1.0000** | 0.9998 | 1.0000 |
 
-### Confusion Matrix (Test Set)
-- **True Positives (TP)**: 180 (All fraud instances detected)
-- **True Negatives (TN)**: 1,019
-- **False Positives (FP)**: 1 (Minimal friction for legitimate transactions)
+### Confusion Matrix (Test Set: 20,000 samples)
+- **True Positives (TP)**: 3,000 (All 3,000 fraud instances detected)
+- **True Negatives (TN)**: 16,996
+- **False Positives (FP)**: 4 (Only 4 false alarms across 17,000 legitimate transfers)
 - **False Negatives (FN)**: 0 (Zero fraud slips through)
 
 ---

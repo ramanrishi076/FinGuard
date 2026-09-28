@@ -14,7 +14,7 @@ import pandas as pd
 
 def generate_synthetic_fraud_dataset(
     output_path="data/synthetic_fraud_dataset.csv",
-    n_samples=6000,
+    n_samples=100000,
     fraud_ratio=0.15,
     random_seed=42,
 ):

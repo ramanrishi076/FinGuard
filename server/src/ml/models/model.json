@@ -2,7 +2,7 @@
   "model_name": "FinGuard Logistic Regression Fraud Detector",
   "model_type": "LogisticRegression",
   "version": "1.0.0",
-  "created_at": "2026-09-28T10:12:14.126473+00:00",
+  "created_at": "2026-09-28T11:08:29.965259+00:00",
   "is_synthetic_training": true,
   "features": [
     "amount",
@@ -14,51 +14,51 @@
   ],
   "scaler": {
     "mean": [
-      9418.402217,
-      50081.420844,
-      40663.170579,
-      0.602292,
-      0.197991,
-      0.169792
+      9393.654145,
+      50564.677064,
+      41171.081315,
+      0.625725,
+      0.194642,
+      0.167288
     ],
     "scale": [
-      15222.635205,
-      66530.625498,
-      59979.69308,
-      1.270808,
-      0.254353,
-      0.37545
+      14974.600261,
+      66661.354304,
+      59917.389371,
+      1.35814,
+      0.248518,
+      0.373232
     ]
   },
-  "intercept": -6.521556,
+  "intercept": -14.996412,
   "coefficients": [
-    1.02949,
-    0.274033,
-    0.042695,
-    5.519727,
-    3.095219,
-    0.675004
+    2.111993,
+    1.043716,
+    0.633405,
+    12.95817,
+    5.841206,
+    0.538237
   ],
   "feature_coefficients": {
-    "amount": 1.02949,
-    "balance_before": 0.274033,
-    "balance_after": 0.042695,
-    "recent_transaction_count": 5.519727,
-    "amount_to_balance_ratio": 3.095219,
-    "is_night_time": 0.675004
+    "amount": 2.111993,
+    "balance_before": 1.043716,
+    "balance_after": 0.633405,
+    "recent_transaction_count": 12.95817,
+    "amount_to_balance_ratio": 5.841206,
+    "is_night_time": 0.538237
   },
   "decision_threshold": 0.5,
   "evaluation_metrics": {
-    "accuracy": 0.9992,
-    "precision": 0.9945,
+    "accuracy": 0.9998,
+    "precision": 0.9987,
     "recall": 1.0,
-    "f1_score": 0.9972,
+    "f1_score": 0.9993,
     "roc_auc": 1.0,
     "confusion_matrix": {
-      "true_negatives": 1019,
-      "false_positives": 1,
+      "true_negatives": 16996,
+      "false_positives": 4,
       "false_negatives": 0,
-      "true_positives": 180
+      "true_positives": 3000
     }
   }
 }

@@ -4,7 +4,7 @@ This directory contains the machine learning fraud detection pipeline for FinGua
 
 ## Structure
 - `data/`
-  - `synthetic_fraud_dataset.csv`: 6,000 reproducible synthetic transaction records generated with seed=42.
+  - `synthetic_fraud_dataset.csv`: 100,000 (1 lakh) reproducible synthetic transaction records generated with seed=42.
 - `models/`
   - `model.json`: Trained Logistic Regression weights, scaler parameters, decision threshold, and metadata.
   - `evaluation_report.json`: Comprehensive test metrics, confusion matrix, and comparative baseline benchmarks.

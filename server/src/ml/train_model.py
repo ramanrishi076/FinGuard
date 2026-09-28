@@ -114,7 +114,7 @@ def train_and_evaluate(
     }
 
     # 3. Baseline Model 2: Random Forest
-    rf_model = RandomForestClassifier(n_estimators=100, max_depth=6, random_state=random_state, class_weight="balanced")
+    rf_model = RandomForestClassifier(n_estimators=100, max_depth=6, random_state=random_state, class_weight="balanced", n_jobs=-1)
     rf_model.fit(X_train, y_train)
     rf_pred = rf_model.predict(X_test)
     rf_proba = rf_model.predict_proba(X_test)[:, 1]

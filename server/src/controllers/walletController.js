@@ -1,9 +1,26 @@
 const prisma = require("../lib/prisma");
 const { calculateFraudRisk } = require("../services/fraudEngine");
+const redisManager = require("../lib/redis");
+const {
+  notifyFraudAlert,
+  notifyBalanceUpdate,
+  notifyTransactionCreated,
+} = require("../lib/socket");
 
 const getWallet = async (req, res) => {
   try {
     const userId = req.user.userId;
+    const cacheKey = `wallet:${userId}`;
+
+    // Try Redis cache first
+    const cachedWallet = await redisManager.get(cacheKey);
+    if (cachedWallet) {
+      try {
+        return res.status(200).json({
+          wallet: JSON.parse(cachedWallet),
+        });
+      } catch {}
+    }
 
     const wallet = await prisma.wallet.findUnique({
       where: {
@@ -17,14 +34,19 @@ const getWallet = async (req, res) => {
       });
     }
 
+    const walletPayload = {
+      id: wallet.id,
+      userId: wallet.userId,
+      balance: wallet.balance.toString(),
+      createdAt: wallet.createdAt,
+      updatedAt: wallet.updatedAt,
+    };
+
+    // Cache wallet for 60 seconds
+    await redisManager.set(cacheKey, walletPayload, 60);
+
     return res.status(200).json({
-      wallet: {
-        id: wallet.id,
-        userId: wallet.userId,
-        balance: wallet.balance.toString(),
-        createdAt: wallet.createdAt,
-        updatedAt: wallet.updatedAt,
-      },
+      wallet: walletPayload,
     });
   } catch (error) {
     console.error("Get wallet error:", error);
@@ -92,6 +114,18 @@ const deposit = async (req, res) => {
         wallet: updatedWallet,
         transaction: newTransaction,
       };
+    });
+
+    // Invalidate Redis cache for user's wallet
+    await redisManager.del(`wallet:${userId}`);
+
+    // Real-time notification: Balance update
+    notifyBalanceUpdate(userId, transaction.wallet.balance);
+
+    // Real-time notification: Transaction created
+    notifyTransactionCreated({
+      receiverUserId: userId,
+      transaction: transaction.transaction,
     });
 
     return res.status(200).json({
@@ -208,6 +242,18 @@ if (fraudResult.decision === "BLOCKED") {
     },
   });
 
+  // Real-time alert: notify sender and broadcast to fraud monitoring room
+  notifyFraudAlert({
+    userId: senderUserId,
+    transactionId: blockedTransaction.id,
+    amount: transferAmount,
+    riskScore: fraudResult.riskScore,
+    decision: fraudResult.decision,
+    reasons: fraudResult.reasons,
+    ruleScore: fraudResult.ruleScore,
+    ml: fraudResult.ml,
+  });
+
   return res.status(403).json({
     message: "Transaction blocked due to fraud risk",
     transaction: {
@@ -268,6 +314,35 @@ if (fraudResult.decision === "BLOCKED") {
         transaction,
       };
     });
+
+    // Invalidate Redis caches for both wallets
+    await redisManager.del(`wallet:${senderUserId}`);
+    await redisManager.del(`wallet:${Number(receiverUserId)}`);
+
+    // Real-time notifications: Balance updates
+    notifyBalanceUpdate(senderUserId, result.senderWallet.balance);
+    notifyBalanceUpdate(Number(receiverUserId), result.receiverWallet.balance);
+
+    // Real-time notifications: Transaction created
+    notifyTransactionCreated({
+      senderUserId,
+      receiverUserId: Number(receiverUserId),
+      transaction: result.transaction,
+    });
+
+    // If FLAGGED or REVIEW, broadcast fraud alert to user and monitoring room
+    if (fraudResult.decision === "FLAGGED" || fraudResult.decision === "REVIEW") {
+      notifyFraudAlert({
+        userId: senderUserId,
+        transactionId: result.transaction.id,
+        amount: transferAmount,
+        riskScore: fraudResult.riskScore,
+        decision: fraudResult.decision,
+        reasons: fraudResult.reasons,
+        ruleScore: fraudResult.ruleScore,
+        ml: fraudResult.ml,
+      });
+    }
 
     return res.status(200).json({
       message: "Transfer successful",
@@ -367,6 +442,18 @@ const withdraw = async (req, res) => {
         wallet: updatedWallet,
         transaction,
       };
+    });
+
+    // Invalidate Redis cache for user's wallet
+    await redisManager.del(`wallet:${userId}`);
+
+    // Real-time notification: Balance update
+    notifyBalanceUpdate(userId, result.wallet.balance);
+
+    // Real-time notification: Transaction created
+    notifyTransactionCreated({
+      senderUserId: userId,
+      transaction: result.transaction,
     });
 
     return res.status(200).json({

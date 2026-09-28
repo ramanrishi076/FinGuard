@@ -56,6 +56,19 @@ app.get("/api/protected", authenticateToken, (req, res) => {
   });
 });
 
+const redisManager = require("./lib/redis");
+const { getIO } = require("./lib/socket");
+
+app.get("/api/realtime/status", (req, res) => {
+  res.json({
+    status: "ok",
+    redis: redisManager.getStatus(),
+    socket: {
+      activeClients: getIO() ? getIO().engine?.clientsCount || 0 : 0,
+    },
+  });
+});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/wallet", walletRoutes);
 app.use("/api/transactions", transactionRoutes);

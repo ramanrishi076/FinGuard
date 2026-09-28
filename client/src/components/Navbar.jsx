@@ -85,7 +85,7 @@ export const Navbar = ({ currentTab, setCurrentTab }) => {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full glass-panel border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md">
+    <header className="sticky top-0 z-40 w-full border-b border-slate-800 bg-[#090d16] shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Brand Logo */}
@@ -167,7 +167,7 @@ export const Navbar = ({ currentTab, setCurrentTab }) => {
 
               {/* Alerts Dropdown Panel */}
               {showAlertsDropdown && (
-                <div className="absolute right-0 mt-2 w-80 sm:w-96 rounded-2xl glass-panel-elevated bg-slate-900/95 border border-slate-800 shadow-2xl p-4 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                <div className="absolute right-0 mt-2 w-80 sm:w-96 rounded-2xl bg-[#0d1527] border border-slate-700 shadow-2xl shadow-black p-4 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
                   <div className="flex items-center justify-between pb-3 border-b border-slate-800">
                     <div className="flex items-center gap-2">
                       <ShieldAlert className="w-4 h-4 text-cyan-400" />
@@ -242,7 +242,7 @@ export const Navbar = ({ currentTab, setCurrentTab }) => {
 
               {/* Profile Dropdown */}
               {showProfileMenu && (
-                <div className="absolute right-0 mt-2 w-56 rounded-2xl glass-panel-elevated bg-slate-900/95 border border-slate-800 shadow-2xl p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-[#0d1527] border border-slate-700 shadow-2xl shadow-black p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
                   <div className="px-3 py-2 border-b border-slate-800">
                     <p className="text-xs font-semibold text-white truncate">{user?.name}</p>
                     <p className="text-[11px] text-slate-400 truncate">{user?.email}</p>

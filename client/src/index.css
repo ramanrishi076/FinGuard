@@ -37,20 +37,16 @@ body {
   background: #334155;
 }
 
-/* Glassmorphism helpers */
+/* Solid dark container panels - fully opaque and high-contrast */
 .glass-panel {
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: #0b111e;
+  border: 1px solid #1e293b;
 }
 
 .glass-panel-elevated {
-  background: rgba(26, 38, 64, 0.65);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+  background-color: #0d1527;
+  border: 1px solid #1e293b;
+  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.85);
 }
 
 .glow-emerald {

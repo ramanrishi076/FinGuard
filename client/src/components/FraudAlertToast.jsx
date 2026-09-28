@@ -29,12 +29,12 @@ export const FraudAlertToast = () => {
   return (
     <div className="fixed bottom-6 right-6 z-50 max-w-md w-full animate-in slide-in-from-bottom-5 fade-in duration-300">
       <div
-        className={`p-4 rounded-2xl glass-panel-elevated border shadow-2xl ${
+        className={`p-4 rounded-2xl border shadow-2xl ${
           isBlocked
-            ? "border-rose-500/50 bg-rose-950/90 text-rose-100 glow-rose"
+            ? "border-rose-500/50 bg-rose-950 text-rose-100 glow-rose"
             : isFlagged
-            ? "border-amber-500/50 bg-amber-950/90 text-amber-100"
-            : "border-yellow-500/50 bg-yellow-950/90 text-yellow-100"
+            ? "border-amber-500/50 bg-amber-950 text-amber-100"
+            : "border-yellow-500/50 bg-yellow-950 text-yellow-100"
         }`}
       >
         <div className="flex items-start justify-between gap-3">

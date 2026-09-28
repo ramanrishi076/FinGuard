@@ -51,7 +51,7 @@ export const AuthView = () => {
       <div className="absolute top-1/4 -left-32 w-96 h-96 bg-cyan-600/15 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-indigo-600/15 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-4xl w-full grid grid-cols-1 md:grid-cols-2 rounded-3xl glass-panel-elevated bg-slate-900/90 border border-slate-800 shadow-2xl overflow-hidden relative z-10">
+      <div className="max-w-4xl w-full grid grid-cols-1 md:grid-cols-2 rounded-3xl bg-[#0d1527] border border-slate-800 shadow-2xl overflow-hidden relative z-10">
         {/* Left Side: Brand & Feature Highlights */}
         <div className="p-8 sm:p-10 flex flex-col justify-between border-b md:border-b-0 md:border-r border-slate-800/80 bg-gradient-to-b from-slate-900/80 via-slate-900/40 to-slate-950/80">
           <div>

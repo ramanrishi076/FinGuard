@@ -25,7 +25,7 @@ export const WalletView = ({
   onRefresh,
 }) => {
   const { user } = useAuth();
-  const [receiverId, setReceiverId] = useState("");
+  const [recipient, setRecipient] = useState("");
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
@@ -37,15 +37,15 @@ export const WalletView = ({
     e.preventDefault();
     setFeedback(null);
 
-    const targetReceiver = Number(receiverId);
+    const targetRecipient = recipient.trim();
     const transferNum = Number(amount);
 
-    if (!targetReceiver || targetReceiver <= 0) {
-      setFeedback({ type: "error", message: "Please enter a valid recipient User ID." });
+    if (!targetRecipient) {
+      setFeedback({ type: "error", message: "Please enter a valid recipient UPI ID, name, or User ID." });
       return;
     }
 
-    if (targetReceiver === Number(user?.id)) {
+    if (targetRecipient === String(user?.id)) {
       setFeedback({ type: "error", message: "Self-transfer is not allowed." });
       return;
     }
@@ -62,12 +62,12 @@ export const WalletView = ({
 
     setLoading(true);
     try {
-      const res = await walletService.transfer(targetReceiver, transferNum, description);
+      const res = await walletService.transfer(targetRecipient, transferNum, description);
       setFeedback({
         type: "success",
-        message: `Transfer of ₹${transferNum.toLocaleString()} completed successfully (Risk Score: ${res.fraud?.riskScore}/100 - ${res.fraud?.decision}).`,
+        message: `Transfer of ₹${transferNum.toLocaleString()} to ${res.recipient?.name || targetRecipient} completed successfully (Risk Score: ${res.fraud?.riskScore}/100 - ${res.fraud?.decision}).`,
       });
-      setReceiverId("");
+      setRecipient("");
       setAmount("");
       setDescription("");
       if (onRefresh) onRefresh();
@@ -161,7 +161,7 @@ export const WalletView = ({
           <div className="grid grid-cols-3 gap-3">
             <button
               onClick={onOpenDeposit}
-              className="py-3.5 px-4 rounded-2xl glass-panel-elevated bg-slate-900/90 hover:bg-slate-800/90 border border-slate-800 text-center transition-all group cursor-pointer"
+              className="py-3.5 px-4 rounded-2xl bg-[#0d1527] hover:bg-slate-800 border border-slate-800 text-center transition-all group cursor-pointer shadow-md"
             >
               <div className="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
                 <ArrowDownLeft className="w-5 h-5" />
@@ -172,7 +172,7 @@ export const WalletView = ({
 
             <button
               onClick={onOpenWithdraw}
-              className="py-3.5 px-4 rounded-2xl glass-panel-elevated bg-slate-900/90 hover:bg-slate-800/90 border border-slate-800 text-center transition-all group cursor-pointer"
+              className="py-3.5 px-4 rounded-2xl bg-[#0d1527] hover:bg-slate-800 border border-slate-800 text-center transition-all group cursor-pointer shadow-md"
             >
               <div className="w-9 h-9 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
                 <ArrowUpRight className="w-5 h-5" />
@@ -183,7 +183,7 @@ export const WalletView = ({
 
             <button
               onClick={onOpenTransfer}
-              className="py-3.5 px-4 rounded-2xl glass-panel-elevated bg-slate-900/90 hover:bg-slate-800/90 border border-slate-800 text-center transition-all group cursor-pointer"
+              className="py-3.5 px-4 rounded-2xl bg-[#0d1527] hover:bg-slate-800 border border-slate-800 text-center transition-all group cursor-pointer shadow-md"
             >
               <div className="w-9 h-9 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
                 <Send className="w-5 h-5" />
@@ -196,7 +196,7 @@ export const WalletView = ({
 
         {/* Right Column: Instant Fast Transfer Form */}
         <div className="lg:col-span-6">
-          <div className="rounded-3xl glass-panel-elevated bg-slate-900/90 p-6 sm:p-7 border border-slate-800">
+          <div className="rounded-3xl bg-[#0d1527] p-6 sm:p-7 border border-slate-800 shadow-xl">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <Send className="w-5 h-5 text-cyan-400" />
@@ -235,15 +235,14 @@ export const WalletView = ({
             <form onSubmit={handleQuickTransfer} className="space-y-4">
               <div>
                 <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                  Recipient User ID
+                  Recipient (UPI ID, Name, or User ID)
                 </label>
                 <input
-                  type="number"
-                  min="1"
+                  type="text"
                   required
-                  value={receiverId}
-                  onChange={(e) => setReceiverId(e.target.value)}
-                  placeholder="Enter recipient User ID (e.g. 2)"
+                  value={recipient}
+                  onChange={(e) => setRecipient(e.target.value)}
+                  placeholder="e.g. alice@finguard or Alice or User ID"
                   className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 text-white placeholder-slate-600 text-sm outline-none transition-all"
                 />
               </div>

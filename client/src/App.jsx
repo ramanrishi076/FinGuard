@@ -138,7 +138,7 @@ const MainApp = () => {
       </main>
 
       {/* Bottom Telemetry Footer */}
-      <footer className="w-full glass-panel border-t border-slate-800/80 py-4 bg-slate-950/80 mt-auto">
+      <footer className="w-full border-t border-slate-800 py-4 bg-[#090d16] mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-500">
           <div className="flex items-center gap-2">
             <Shield className="w-3.5 h-3.5 text-cyan-400" />

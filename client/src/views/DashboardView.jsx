@@ -113,7 +113,7 @@ export const DashboardView = ({
       {/* Hero Cards: Balance & AI Shield Status */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         {/* Wallet Balance Card */}
-        <div className="lg:col-span-2 rounded-3xl glass-panel-elevated bg-gradient-to-br from-slate-900 via-slate-900/90 to-indigo-950/40 p-6 sm:p-8 border border-slate-800 relative overflow-hidden">
+        <div className="lg:col-span-2 rounded-3xl bg-[#0d1527] p-6 sm:p-8 border border-slate-800 relative overflow-hidden shadow-xl">
           <div className="absolute top-0 right-0 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
           <div className="flex items-center justify-between mb-4">
             <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
@@ -155,7 +155,7 @@ export const DashboardView = ({
         </div>
 
         {/* AI Fraud Shield Radar Status Card */}
-        <div className="rounded-3xl glass-panel-elevated bg-slate-900/90 p-6 border border-slate-800 flex flex-col justify-between">
+        <div className="rounded-3xl bg-[#0d1527] p-6 border border-slate-800 flex flex-col justify-between shadow-xl">
           <div>
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
@@ -208,7 +208,7 @@ export const DashboardView = ({
       {/* 2-Column Section: Real-time Transaction Feed & Security Alerts */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         {/* Recent Transactions Feed */}
-        <div className="lg:col-span-2 rounded-3xl glass-panel-elevated bg-slate-900/90 p-6 border border-slate-800">
+        <div className="lg:col-span-2 rounded-3xl bg-[#0d1527] p-6 border border-slate-800 shadow-xl">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Activity className="w-4 h-4 text-cyan-400" />
@@ -288,7 +288,7 @@ export const DashboardView = ({
         </div>
 
         {/* Live Security & Fraud Alerts Panel */}
-        <div className="rounded-3xl glass-panel-elevated bg-slate-900/90 p-6 border border-slate-800 flex flex-col justify-between">
+        <div className="rounded-3xl bg-[#0d1527] p-6 border border-slate-800 flex flex-col justify-between shadow-xl">
           <div>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">

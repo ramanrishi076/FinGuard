@@ -132,8 +132,8 @@ export const TransferModal = ({ isOpen, onClose, onSuccess, currentBalance, curr
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-150">
-      <div className="relative w-full max-w-lg p-6 rounded-3xl glass-panel-elevated bg-slate-900 border border-slate-800 shadow-2xl max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-150">
+      <div className="relative w-full max-w-lg p-6 rounded-3xl bg-[#0d1527] border border-slate-700/80 shadow-2xl max-h-[90vh] overflow-y-auto">
         <button
           onClick={handleClose}
           className="absolute top-5 right-5 p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"

@@ -64,7 +64,7 @@ export const AnalyticsView = ({ transactions }) => {
 
       {/* Metric Cards Banner */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-5 rounded-2xl glass-panel-elevated bg-slate-900/90 border border-slate-800">
+        <div className="p-5 rounded-2xl bg-[#0d1527] border border-slate-800 shadow-md">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-semibold text-slate-400">Training Scale</span>
             <Sparkles className="w-4 h-4 text-cyan-400" />
@@ -73,7 +73,7 @@ export const AnalyticsView = ({ transactions }) => {
           <span className="text-[11px] text-slate-500">Synthetic transactions (Seed 42)</span>
         </div>
 
-        <div className="p-5 rounded-2xl glass-panel-elevated bg-slate-900/90 border border-slate-800">
+        <div className="p-5 rounded-2xl bg-[#0d1527] border border-slate-800 shadow-md">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-semibold text-slate-400">Model Accuracy</span>
             <CheckCircle2 className="w-4 h-4 text-emerald-400" />
@@ -82,7 +82,7 @@ export const AnalyticsView = ({ transactions }) => {
           <span className="text-[11px] text-slate-500">Evaluated on 20k test set</span>
         </div>
 
-        <div className="p-5 rounded-2xl glass-panel-elevated bg-slate-900/90 border border-slate-800">
+        <div className="p-5 rounded-2xl bg-[#0d1527] border border-slate-800 shadow-md">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-semibold text-slate-400">Fraud Recall</span>
             <ShieldAlert className="w-4 h-4 text-cyan-400" />
@@ -91,7 +91,7 @@ export const AnalyticsView = ({ transactions }) => {
           <span className="text-[11px] text-slate-500">0 False Negatives caught</span>
         </div>
 
-        <div className="p-5 rounded-2xl glass-panel-elevated bg-slate-900/90 border border-slate-800">
+        <div className="p-5 rounded-2xl bg-[#0d1527] border border-slate-800 shadow-md">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-semibold text-slate-400">Inference Engine</span>
             <Radio className="w-4 h-4 text-emerald-400 animate-pulse" />
@@ -104,7 +104,7 @@ export const AnalyticsView = ({ transactions }) => {
       {/* Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* ML Feature Weights Chart */}
-        <div className="lg:col-span-8 rounded-3xl glass-panel-elevated bg-slate-900/90 p-6 border border-slate-800">
+        <div className="lg:col-span-8 rounded-3xl bg-[#0d1527] p-6 border border-slate-800 shadow-xl">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
               <Cpu className="w-5 h-5 text-cyan-400" />
@@ -165,7 +165,7 @@ export const AnalyticsView = ({ transactions }) => {
         </div>
 
         {/* Fraud Decision Breakdown Donut */}
-        <div className="lg:col-span-4 rounded-3xl glass-panel-elevated bg-slate-900/90 p-6 border border-slate-800 flex flex-col justify-between">
+        <div className="lg:col-span-4 rounded-3xl bg-[#0d1527] p-6 border border-slate-800 flex flex-col justify-between shadow-xl">
           <div>
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
@@ -238,7 +238,7 @@ export const AnalyticsView = ({ transactions }) => {
       </div>
 
       {/* Live Event Stream / Audit Feed */}
-      <div className="rounded-3xl glass-panel-elevated bg-slate-900/90 p-6 border border-slate-800">
+      <div className="rounded-3xl bg-[#0d1527] p-6 border border-slate-800 shadow-xl">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <Activity className="w-5 h-5 text-emerald-400" />

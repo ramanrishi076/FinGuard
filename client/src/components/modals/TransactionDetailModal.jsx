@@ -89,17 +89,45 @@ export const TransactionDetailModal = ({ transaction, onClose }) => {
             <span className="font-semibold text-slate-200 uppercase">{transaction.type}</span>
           </div>
 
-          {transaction.senderWalletId && (
-            <div className="flex justify-between items-center py-1 border-b border-slate-800/60">
-              <span className="text-slate-400">Sender Wallet</span>
-              <span className="font-mono text-slate-300">Wallet #{transaction.senderWalletId}</span>
+          {(transaction.senderName || transaction.senderWalletId) && (
+            <div className="flex justify-between items-start py-1 border-b border-slate-800/60">
+              <span className="text-slate-400">Sender</span>
+              <div className="text-right">
+                <span className="font-semibold text-slate-200 block">
+                  {transaction.senderName || `Wallet #${transaction.senderWalletId}`}
+                </span>
+                {transaction.senderUpiId && (
+                  <span className="font-mono text-[11px] text-cyan-400 block">
+                    {transaction.senderUpiId}
+                  </span>
+                )}
+                {transaction.senderWalletId && (
+                  <span className="text-[10px] text-slate-500 font-mono">
+                    Wallet #{transaction.senderWalletId}
+                  </span>
+                )}
+              </div>
             </div>
           )}
 
-          {transaction.receiverWalletId && (
-            <div className="flex justify-between items-center py-1 border-b border-slate-800/60">
-              <span className="text-slate-400">Receiver Wallet</span>
-              <span className="font-mono text-slate-300">Wallet #{transaction.receiverWalletId}</span>
+          {(transaction.receiverName || transaction.receiverWalletId) && (
+            <div className="flex justify-between items-start py-1 border-b border-slate-800/60">
+              <span className="text-slate-400">Recipient</span>
+              <div className="text-right">
+                <span className="font-semibold text-slate-200 block">
+                  {transaction.receiverName || `Wallet #${transaction.receiverWalletId}`}
+                </span>
+                {transaction.receiverUpiId && (
+                  <span className="font-mono text-[11px] text-cyan-400 block">
+                    {transaction.receiverUpiId}
+                  </span>
+                )}
+                {transaction.receiverWalletId && (
+                  <span className="text-[10px] text-slate-500 font-mono">
+                    Wallet #{transaction.receiverWalletId}
+                  </span>
+                )}
+              </div>
             </div>
           )}
 

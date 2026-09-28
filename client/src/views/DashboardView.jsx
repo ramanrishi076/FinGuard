@@ -254,7 +254,7 @@ export const DashboardView = ({
                       <div className="flex items-center gap-2">
                         <span className="text-xs font-semibold text-white">
                           {tx.type === "TRANSFER"
-                            ? tx.description || "Wallet Transfer"
+                            ? (tx.receiverName ? `To: ${tx.receiverName}` : (tx.description || "Wallet Transfer"))
                             : tx.type === "DEPOSIT"
                             ? "Deposit"
                             : "Withdrawal"}
@@ -262,6 +262,7 @@ export const DashboardView = ({
                         {getStatusBadge(tx.status)}
                       </div>
                       <span className="text-[11px] text-slate-500">
+                        {tx.receiverUpiId && <span className="font-mono text-cyan-400 mr-1.5">{tx.receiverUpiId} •</span>}
                         {new Date(tx.createdAt).toLocaleTimeString([], {
                           hour: "2-digit",
                           minute: "2-digit",

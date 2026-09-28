@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { walletService } from "../../services/api";
 import {
   Send,
@@ -9,18 +9,21 @@ import {
   XCircle,
   CheckCircle2,
   Cpu,
+  AtSign,
+  User,
+  Sparkles,
 } from "lucide-react";
 
 export const TransferModal = ({ isOpen, onClose, onSuccess, currentBalance, currentUserId }) => {
-  const [receiverId, setReceiverId] = useState("");
+  const [recipient, setRecipient] = useState("");
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [blockedResult, setBlockedResult] = useState(null);
   const [error, setError] = useState(null);
-
-  if (!isOpen) return null;
+  const [suggestions, setSuggestions] = useState([]);
+  const [verifiedRecipient, setVerifiedRecipient] = useState(null);
 
   const numericBalance = Number(currentBalance || 0);
   const transferNum = Number(amount || 0);
@@ -29,18 +32,57 @@ export const TransferModal = ({ isOpen, onClose, onSuccess, currentBalance, curr
   const isLargeAmount = transferNum >= 50000;
   const isDrainRisk = numericBalance > 0 && transferNum / numericBalance >= 0.85;
 
+  useEffect(() => {
+    if (!isOpen) return;
+    let active = true;
+
+    const fetchSuggestions = async () => {
+      try {
+        const list = await walletService.lookupRecipients(recipient);
+        if (active) {
+          setSuggestions(list);
+          const q = recipient.trim().toLowerCase();
+          const exact = list.find(
+            (u) =>
+              u.upiId.toLowerCase() === q ||
+              u.email.toLowerCase() === q ||
+              String(u.id) === q ||
+              u.name.toLowerCase() === q
+          );
+          setVerifiedRecipient(exact || null);
+        }
+      } catch {
+        // Ignored
+      }
+    };
+
+    const timer = setTimeout(fetchSuggestions, 120);
+    return () => {
+      active = false;
+      clearTimeout(timer);
+    };
+  }, [recipient, isOpen]);
+
+  if (!isOpen) return null;
+
   const handleReset = () => {
-    setReceiverId("");
+    setRecipient("");
     setAmount("");
     setDescription("");
     setResult(null);
     setBlockedResult(null);
     setError(null);
+    setVerifiedRecipient(null);
   };
 
   const handleClose = () => {
     handleReset();
     onClose();
+  };
+
+  const handleSelectRecipient = (u) => {
+    setRecipient(u.upiId);
+    setVerifiedRecipient(u);
   };
 
   const handleSubmit = async (e) => {
@@ -49,14 +91,17 @@ export const TransferModal = ({ isOpen, onClose, onSuccess, currentBalance, curr
     setResult(null);
     setBlockedResult(null);
 
-    const targetReceiver = Number(receiverId);
-    if (!targetReceiver || targetReceiver <= 0) {
-      setError("Please provide a valid recipient User ID");
+    const targetRecipient = recipient.trim();
+    if (!targetRecipient) {
+      setError("Please provide a valid recipient Name, UPI ID, or User ID");
       return;
     }
 
-    if (targetReceiver === Number(currentUserId)) {
-      setError("Self-transfers are not allowed. Please enter another user's ID.");
+    if (
+      (verifiedRecipient && Number(verifiedRecipient.id) === Number(currentUserId)) ||
+      targetRecipient === String(currentUserId)
+    ) {
+      setError("Self-transfers are not allowed. Please enter another user's UPI ID or ID.");
       return;
     }
 
@@ -72,7 +117,7 @@ export const TransferModal = ({ isOpen, onClose, onSuccess, currentBalance, curr
 
     setLoading(true);
     try {
-      const res = await walletService.transfer(targetReceiver, transferNum, description);
+      const res = await walletService.transfer(targetRecipient, transferNum, description);
       setResult(res);
       if (onSuccess) onSuccess(res);
     } catch (err) {
@@ -148,7 +193,7 @@ export const TransferModal = ({ isOpen, onClose, onSuccess, currentBalance, curr
 
             <button
               onClick={handleReset}
-              className="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs transition-colors"
+              className="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs transition-colors cursor-pointer"
             >
               Try Another Transaction
             </button>
@@ -164,10 +209,19 @@ export const TransferModal = ({ isOpen, onClose, onSuccess, currentBalance, curr
                 <h4 className="text-base font-bold text-emerald-300">Transfer Successful</h4>
               </div>
               <p className="text-xs leading-relaxed text-emerald-200/90 mb-3">
-                Sent ₹{Number(result.transaction.amount).toLocaleString()} to User #{receiverId}.
+                Sent ₹{Number(result.transaction.amount).toLocaleString()} to{" "}
+                <strong>{result.recipient?.name || "Recipient"}</strong> ({result.recipient?.upiId || recipient}).
               </p>
 
               <div className="p-3 rounded-xl bg-black/40 border border-emerald-500/20 space-y-2 text-xs">
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-400">Recipient Name:</span>
+                  <span className="font-semibold text-white">{result.recipient?.name || "Recipient"}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-400">Recipient UPI ID:</span>
+                  <span className="font-mono text-cyan-400 font-semibold">{result.recipient?.upiId || recipient}</span>
+                </div>
                 <div className="flex justify-between items-center">
                   <span className="text-slate-400">Transaction ID:</span>
                   <span className="font-mono text-slate-200">#{result.transaction.id}</span>
@@ -189,7 +243,7 @@ export const TransferModal = ({ isOpen, onClose, onSuccess, currentBalance, curr
 
             <button
               onClick={handleClose}
-              className="w-full py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-xs transition-colors"
+              className="w-full py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-xs transition-colors cursor-pointer"
             >
               Done
             </button>
@@ -207,18 +261,63 @@ export const TransferModal = ({ isOpen, onClose, onSuccess, currentBalance, curr
             )}
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                Recipient User ID
-              </label>
-              <input
-                type="number"
-                min="1"
-                required
-                value={receiverId}
-                onChange={(e) => setReceiverId(e.target.value)}
-                placeholder="Enter recipient User ID (e.g. 2)"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 text-white placeholder-slate-600 text-sm outline-none transition-all"
-              />
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="text-xs font-semibold text-slate-300">
+                  Recipient (UPI ID, Name, or User ID)
+                </label>
+                <span className="text-[11px] text-cyan-400 flex items-center gap-1 font-mono">
+                  <Sparkles className="w-3 h-3 text-cyan-400" /> FinGuard UPI
+                </span>
+              </div>
+              <div className="relative">
+                <AtSign className="w-4 h-4 text-cyan-500/70 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <input
+                  type="text"
+                  required
+                  value={recipient}
+                  onChange={(e) => setRecipient(e.target.value)}
+                  placeholder="Enter UPI ID (e.g. alice@finguard) or User ID"
+                  className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 text-white placeholder-slate-600 text-sm outline-none transition-all font-sans"
+                />
+              </div>
+
+              {/* Verified Recipient Confirmation Pill */}
+              {verifiedRecipient && (
+                <div className="mt-2 p-2 px-3 rounded-xl bg-emerald-950/40 border border-emerald-800/40 flex items-center justify-between text-xs animate-in fade-in duration-150">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                    <span className="text-slate-300">
+                      Recipient: <strong className="text-white">{verifiedRecipient.name}</strong>
+                    </span>
+                  </div>
+                  <span className="font-mono text-[11px] text-cyan-400 bg-cyan-950/60 border border-cyan-800/40 px-2 py-0.5 rounded-full">
+                    {verifiedRecipient.upiId}
+                  </span>
+                </div>
+              )}
+
+              {/* Quick Suggestions / Contacts */}
+              {suggestions.length > 0 && !verifiedRecipient && (
+                <div className="mt-2.5">
+                  <span className="text-[10px] uppercase font-bold text-slate-500 block mb-1.5">
+                    Quick Select Contact:
+                  </span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {suggestions.map((s) => (
+                      <button
+                        key={s.id}
+                        type="button"
+                        onClick={() => handleSelectRecipient(s)}
+                        className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/60 text-xs transition-colors cursor-pointer"
+                      >
+                        <User className="w-3 h-3 text-cyan-400" />
+                        <span className="font-medium">{s.name}</span>
+                        <span className="text-[10px] font-mono text-cyan-400">({s.upiId})</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             <div>

@@ -103,13 +103,17 @@ export const walletService = {
     const res = await api.post("/wallet/withdraw", { amount: String(amount) });
     return res.data;
   },
-  transfer: async (receiverUserId, amount, description) => {
+  transfer: async (recipient, amount, description) => {
     const res = await api.post("/wallet/transfer", {
-      receiverUserId: Number(receiverUserId),
+      recipient: String(recipient),
       amount: String(amount),
       description: description || undefined,
     });
     return res.data;
+  },
+  lookupRecipients: async (query = "") => {
+    const res = await api.get(`/wallet/lookup?query=${encodeURIComponent(query)}`);
+    return res.data.recipients || [];
   },
 };
 

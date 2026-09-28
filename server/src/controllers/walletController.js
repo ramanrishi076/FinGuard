@@ -153,14 +153,97 @@ const deposit = async (req, res) => {
 };
 
 
+const resolveReceiver = async (identifier) => {
+  if (!identifier) return null;
+  const raw = String(identifier).trim();
+
+  // 1. If numeric user ID
+  if (/^\d+$/.test(raw)) {
+    const user = await prisma.user.findUnique({
+      where: { id: Number(raw) },
+      include: { wallet: true },
+    });
+    if (user) return user;
+  }
+
+  // 2. If UPI ID like alice@finguard or email alice@finguard.com
+  const clean = raw.toLowerCase();
+  const username = clean.replace(/@.*$/, "");
+  const user = await prisma.user.findFirst({
+    where: {
+      OR: [
+        { email: clean },
+        { email: `${username}@finguard.com` },
+        { email: { startsWith: username + "@" } },
+        { name: { equals: raw, mode: "insensitive" } },
+      ],
+    },
+    include: { wallet: true },
+  });
+  return user;
+};
+
+const lookupRecipient = async (req, res) => {
+  try {
+    const { query } = req.query;
+    const currentUserId = req.user.userId;
+
+    if (!query || !query.trim()) {
+      const suggestions = await prisma.user.findMany({
+        where: { id: { not: currentUserId } },
+        select: { id: true, name: true, email: true },
+        take: 5,
+        orderBy: { id: "asc" },
+      });
+      return res.status(200).json({
+        recipients: suggestions.map((u) => ({
+          id: u.id,
+          name: u.name,
+          email: u.email,
+          upiId: `${u.email.split("@")[0]}@finguard`,
+        })),
+      });
+    }
+
+    const clean = query.trim().toLowerCase();
+    const isNum = /^\d+$/.test(clean);
+
+    const matches = await prisma.user.findMany({
+      where: {
+        id: { not: currentUserId },
+        OR: [
+          ...(isNum ? [{ id: Number(clean) }] : []),
+          { name: { contains: clean, mode: "insensitive" } },
+          { email: { contains: clean.replace(/@finguard.*$/, ""), mode: "insensitive" } },
+        ],
+      },
+      select: { id: true, name: true, email: true },
+      take: 6,
+    });
+
+    return res.status(200).json({
+      recipients: matches.map((u) => ({
+        id: u.id,
+        name: u.name,
+        email: u.email,
+        upiId: `${u.email.split("@")[0]}@finguard`,
+      })),
+    });
+  } catch (error) {
+    console.error("Lookup recipient error:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
 const transfer = async (req, res) => {
   try {
     const senderUserId = req.user.userId;
-    const { receiverUserId, amount, description } = req.body;
+    const { receiverUserId, recipient, amount, description } = req.body;
+    const targetIdentifier = recipient || receiverUserId;
 
-    if (!receiverUserId || !amount) {
+    if (!targetIdentifier || !amount) {
       return res.status(400).json({
-        message: "Receiver user ID and amount are required",
+        message: "Recipient (UPI ID or User ID) and amount are required",
       });
     }
 
@@ -172,7 +255,15 @@ const transfer = async (req, res) => {
       });
     }
 
-    if (Number(receiverUserId) === senderUserId) {
+    const receiverUser = await resolveReceiver(targetIdentifier);
+
+    if (!receiverUser) {
+      return res.status(404).json({
+        message: `Recipient "${targetIdentifier}" not found. Please verify the UPI ID or User ID.`,
+      });
+    }
+
+    if (receiverUser.id === senderUserId) {
       return res.status(400).json({
         message: "Self-transfer is not allowed",
       });
@@ -190,11 +281,14 @@ const transfer = async (req, res) => {
       });
     }
 
-    const receiverWallet = await prisma.wallet.findUnique({
-      where: {
-        userId: Number(receiverUserId),
-      },
-    });
+    let receiverWallet = receiverUser.wallet;
+    if (!receiverWallet) {
+      receiverWallet = await prisma.wallet.findUnique({
+        where: {
+          userId: receiverUser.id,
+        },
+      });
+    }
 
     if (!receiverWallet) {
       return res.status(404).json({
@@ -317,16 +411,16 @@ if (fraudResult.decision === "BLOCKED") {
 
     // Invalidate Redis caches for both wallets
     await redisManager.del(`wallet:${senderUserId}`);
-    await redisManager.del(`wallet:${Number(receiverUserId)}`);
+    await redisManager.del(`wallet:${receiverUser.id}`);
 
     // Real-time notifications: Balance updates
     notifyBalanceUpdate(senderUserId, result.senderWallet.balance);
-    notifyBalanceUpdate(Number(receiverUserId), result.receiverWallet.balance);
+    notifyBalanceUpdate(receiverUser.id, result.receiverWallet.balance);
 
     // Real-time notifications: Transaction created
     notifyTransactionCreated({
       senderUserId,
-      receiverUserId: Number(receiverUserId),
+      receiverUserId: receiverUser.id,
       transaction: result.transaction,
     });
 
@@ -346,6 +440,12 @@ if (fraudResult.decision === "BLOCKED") {
 
     return res.status(200).json({
       message: "Transfer successful",
+      recipient: {
+        id: receiverUser.id,
+        name: receiverUser.name,
+        email: receiverUser.email,
+        upiId: `${receiverUser.email.split("@")[0]}@finguard`,
+      },
       senderWallet: {
         id: result.senderWallet.id,
         balance: result.senderWallet.balance.toString(),
@@ -485,4 +585,5 @@ module.exports = {
   deposit,
   transfer,
   withdraw,
+  lookupRecipient,
 };

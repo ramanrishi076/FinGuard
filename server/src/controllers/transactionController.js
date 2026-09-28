@@ -27,22 +27,54 @@ const getTransactions = async (req, res) => {
           },
         ],
       },
+      include: {
+        senderWallet: {
+          include: {
+            user: {
+              select: { id: true, name: true, email: true },
+            },
+          },
+        },
+        receiverWallet: {
+          include: {
+            user: {
+              select: { id: true, name: true, email: true },
+            },
+          },
+        },
+      },
       orderBy: {
         createdAt: "desc",
       },
     });
 
+    const formatUpi = (user) => {
+      if (!user || !user.email) return null;
+      return `${user.email.split("@")[0]}@finguard`;
+    };
+
     return res.status(200).json({
-      transactions: transactions.map((transaction) => ({
-        id: transaction.id,
-        senderWalletId: transaction.senderWalletId,
-        receiverWalletId: transaction.receiverWalletId,
-        amount: transaction.amount.toString(),
-        type: transaction.type,
-        status: transaction.status,
-        description: transaction.description,
-        createdAt: transaction.createdAt,
-      })),
+      transactions: transactions.map((transaction) => {
+        const senderUser = transaction.senderWallet?.user;
+        const receiverUser = transaction.receiverWallet?.user;
+
+        return {
+          id: transaction.id,
+          senderWalletId: transaction.senderWalletId,
+          senderUserId: senderUser?.id || null,
+          senderName: senderUser?.name || (transaction.type === "DEPOSIT" ? "Banking Deposit" : null),
+          senderUpiId: formatUpi(senderUser),
+          receiverWalletId: transaction.receiverWalletId,
+          receiverUserId: receiverUser?.id || null,
+          receiverName: receiverUser?.name || (transaction.type === "WITHDRAWAL" ? "Bank Account Payout" : null),
+          receiverUpiId: formatUpi(receiverUser),
+          amount: transaction.amount.toString(),
+          type: transaction.type,
+          status: transaction.status,
+          description: transaction.description,
+          createdAt: transaction.createdAt,
+        };
+      }),
     });
   } catch (error) {
     console.error("Get transactions error:", error);
@@ -88,6 +120,22 @@ const getTransactionById = async (req, res) => {
           },
         ],
       },
+      include: {
+        senderWallet: {
+          include: {
+            user: {
+              select: { id: true, name: true, email: true },
+            },
+          },
+        },
+        receiverWallet: {
+          include: {
+            user: {
+              select: { id: true, name: true, email: true },
+            },
+          },
+        },
+      },
     });
 
     if (!transaction) {
@@ -96,11 +144,25 @@ const getTransactionById = async (req, res) => {
       });
     }
 
+    const formatUpi = (user) => {
+      if (!user || !user.email) return null;
+      return `${user.email.split("@")[0]}@finguard`;
+    };
+
+    const senderUser = transaction.senderWallet?.user;
+    const receiverUser = transaction.receiverWallet?.user;
+
     return res.status(200).json({
       transaction: {
         id: transaction.id,
         senderWalletId: transaction.senderWalletId,
+        senderUserId: senderUser?.id || null,
+        senderName: senderUser?.name || (transaction.type === "DEPOSIT" ? "Banking Deposit" : null),
+        senderUpiId: formatUpi(senderUser),
         receiverWalletId: transaction.receiverWalletId,
+        receiverUserId: receiverUser?.id || null,
+        receiverName: receiverUser?.name || (transaction.type === "WITHDRAWAL" ? "Bank Account Payout" : null),
+        receiverUpiId: formatUpi(receiverUser),
         amount: transaction.amount.toString(),
         type: transaction.type,
         status: transaction.status,

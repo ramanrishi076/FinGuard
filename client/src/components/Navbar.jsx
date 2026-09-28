@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useSocket } from "../context/SocketContext";
 import {
@@ -21,6 +21,32 @@ export const Navbar = ({ currentTab, setCurrentTab }) => {
   const { isConnected, alerts, unreadAlertsCount, markAllAlertsRead, dismissAlert } = useSocket();
   const [showAlertsDropdown, setShowAlertsDropdown] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+
+  const alertsRef = useRef(null);
+  const profileRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (alertsRef.current && !alertsRef.current.contains(event.target)) {
+        setShowAlertsDropdown(false);
+      }
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setShowProfileMenu(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, []);
+
+  const handleMarkAllRead = () => {
+    markAllAlertsRead();
+    setShowAlertsDropdown(false);
+  };
 
   const navItems = [
     { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -122,7 +148,7 @@ export const Navbar = ({ currentTab, setCurrentTab }) => {
             </div>
 
             {/* Fraud Alerts Notification Bell */}
-            <div className="relative">
+            <div className="relative" ref={alertsRef}>
               <button
                 onClick={() => {
                   setShowAlertsDropdown(!showAlertsDropdown);
@@ -149,8 +175,8 @@ export const Navbar = ({ currentTab, setCurrentTab }) => {
                     </div>
                     {alerts.length > 0 && (
                       <button
-                        onClick={markAllAlertsRead}
-                        className="text-xs text-cyan-400 hover:text-cyan-300 font-medium"
+                        onClick={handleMarkAllRead}
+                        className="text-xs text-cyan-400 hover:text-cyan-300 font-medium cursor-pointer"
                       >
                         Mark read
                       </button>
@@ -193,7 +219,7 @@ export const Navbar = ({ currentTab, setCurrentTab }) => {
             </div>
 
             {/* User Profile & Logout */}
-            <div className="relative">
+            <div className="relative" ref={profileRef}>
               <button
                 onClick={() => {
                   setShowProfileMenu(!showProfileMenu);

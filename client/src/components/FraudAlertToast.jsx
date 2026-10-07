@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSocket } from "../context/SocketContext";
-import { ShieldAlert, AlertTriangle, XCircle, CheckCircle2, X } from "lucide-react";
+import { ShieldAlert, AlertTriangle, XCircle, X } from "lucide-react";
 
 export const FraudAlertToast = () => {
   const { addFraudListener } = useSocket();
@@ -29,23 +29,23 @@ export const FraudAlertToast = () => {
   return (
     <div className="fixed bottom-6 right-6 z-50 max-w-md w-full animate-in slide-in-from-bottom-5 fade-in duration-300">
       <div
-        className={`p-4 rounded-2xl border shadow-2xl ${
+        className={`p-4 rounded-3xl border shadow-2xl bg-[var(--surface)] ${
           isBlocked
-            ? "border-rose-500/50 bg-rose-950 text-rose-100 glow-rose"
+            ? "border-[#ea4335]/60 text-[var(--text-secondary)]"
             : isFlagged
-            ? "border-amber-500/50 bg-amber-950 text-amber-100"
-            : "border-yellow-500/50 bg-yellow-950 text-yellow-100"
+            ? "border-[#f9ab00]/60 text-[var(--text-secondary)]"
+            : "border-[#fbbc04]/60 text-[var(--text-secondary)]"
         }`}
       >
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-start gap-3">
             <div
-              className={`p-2 rounded-xl mt-0.5 ${
+              className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
                 isBlocked
-                  ? "bg-rose-500/20 text-rose-400"
+                  ? "bg-[#ea4335]/20 text-[#f28b82]"
                   : isFlagged
-                  ? "bg-amber-500/20 text-amber-400"
-                  : "bg-yellow-500/20 text-yellow-400"
+                  ? "bg-[#f9ab00]/20 text-[#fdd663]"
+                  : "bg-[#fbbc04]/20 text-[#fde293]"
               }`}
             >
               {isBlocked ? (
@@ -58,19 +58,25 @@ export const FraudAlertToast = () => {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h4 className="text-sm font-bold tracking-tight">
-                  {isBlocked ? "Transfer Blocked by AI Shield" : "Transaction Under Review"}
+                <h4 className="text-sm font-bold tracking-tight text-[var(--text-primary)]">
+                  {isBlocked ? "Transfer Blocked by FinGuard" : "Payment Under Review"}
                 </h4>
-                <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-black/40 border border-white/10">
+                <span
+                  className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-full ${
+                    isBlocked
+                      ? "bg-[#ea4335]/20 text-[#f28b82]"
+                      : "bg-[#f9ab00]/20 text-[#fdd663]"
+                  }`}
+                >
                   {activeAlert.decision}
                 </span>
               </div>
-              <p className="text-xs opacity-90 mt-1">
+              <p className="text-xs text-[var(--text-tertiary)] mt-1">
                 Amount: ₹{Number(activeAlert.amount).toLocaleString()} • Risk Score:{" "}
-                <strong className="underline">{activeAlert.riskScore}/100</strong>
+                <strong className="text-[var(--text-primary)] font-mono">{activeAlert.riskScore}/100</strong>
               </p>
               {activeAlert.reasons && activeAlert.reasons.length > 0 && (
-                <ul className="mt-2 space-y-0.5 text-[11px] opacity-80 list-disc list-inside">
+                <ul className="mt-2 space-y-0.5 text-[11px] text-[var(--text-tertiary)] list-disc list-inside">
                   {activeAlert.reasons.map((r, i) => (
                     <li key={i}>{r}</li>
                   ))}
@@ -81,7 +87,7 @@ export const FraudAlertToast = () => {
 
           <button
             onClick={() => setActiveAlert(null)}
-            className="p-1 rounded-lg hover:bg-black/30 text-white/70 hover:text-white transition-colors"
+            className="p-1.5 rounded-full hover:bg-[var(--surface-elevated)] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>

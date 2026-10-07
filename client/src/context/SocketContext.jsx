@@ -155,7 +155,15 @@ export const SocketProvider = ({ children }) => {
 export const useSocket = () => {
   const context = useContext(SocketContext);
   if (!context) {
-    throw new Error("useSocket must be used within a SocketProvider");
+    return {
+      isConnected: false,
+      alerts: [],
+      liveEvents: [],
+      addBalanceListener: () => () => {},
+      addTransactionListener: () => () => {},
+      addFraudListener: () => () => {},
+      clearAlerts: () => {},
+    };
   }
   return context;
 };

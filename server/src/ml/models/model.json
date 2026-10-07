@@ -2,7 +2,7 @@
   "model_name": "FinGuard Logistic Regression Fraud Detector",
   "model_type": "LogisticRegression",
   "version": "1.0.0",
-  "created_at": "2026-09-28T11:08:29.965259+00:00",
+  "created_at": "2026-10-07T07:43:16.577059+00:00",
   "is_synthetic_training": true,
   "features": [
     "amount",
@@ -14,51 +14,51 @@
   ],
   "scaler": {
     "mean": [
-      9393.654145,
-      50564.677064,
-      41171.081315,
-      0.625725,
-      0.194642,
-      0.167288
+      12827.833312,
+      49575.0722,
+      36747.303173,
+      0.752062,
+      0.288883,
+      0.1687
     ],
     "scale": [
-      14974.600261,
-      66661.354304,
-      59917.389371,
-      1.35814,
-      0.248518,
-      0.373232
+      16846.558909,
+      64111.139005,
+      55048.447296,
+      1.413556,
+      0.262887,
+      0.374487
     ]
   },
-  "intercept": -14.996412,
+  "intercept": -1.079935,
   "coefficients": [
-    2.111993,
-    1.043716,
-    0.633405,
-    12.95817,
-    5.841206,
-    0.538237
+    0.440678,
+    -0.374355,
+    -0.570839,
+    1.404255,
+    0.468991,
+    0.430548
   ],
   "feature_coefficients": {
-    "amount": 2.111993,
-    "balance_before": 1.043716,
-    "balance_after": 0.633405,
-    "recent_transaction_count": 12.95817,
-    "amount_to_balance_ratio": 5.841206,
-    "is_night_time": 0.538237
+    "amount": 0.440678,
+    "balance_before": -0.374355,
+    "balance_after": -0.570839,
+    "recent_transaction_count": 1.404255,
+    "amount_to_balance_ratio": 0.468991,
+    "is_night_time": 0.430548
   },
   "decision_threshold": 0.5,
   "evaluation_metrics": {
-    "accuracy": 0.9998,
-    "precision": 0.9987,
-    "recall": 1.0,
-    "f1_score": 0.9993,
-    "roc_auc": 1.0,
+    "accuracy": 0.8858,
+    "precision": 0.6041,
+    "recall": 0.8399,
+    "f1_score": 0.7027,
+    "roc_auc": 0.9218,
     "confusion_matrix": {
-      "true_negatives": 16996,
-      "false_positives": 4,
-      "false_negatives": 0,
-      "true_positives": 3000
+      "true_negatives": 15014,
+      "false_positives": 1770,
+      "false_negatives": 515,
+      "true_positives": 2701
     }
   }
 }

@@ -58,6 +58,15 @@ const getTransactions = async (req, res) => {
         const senderUser = transaction.senderWallet?.user;
         const receiverUser = transaction.receiverWallet?.user;
 
+        let parsedFactors = [];
+        try {
+          if (transaction.riskFactors) {
+            parsedFactors = JSON.parse(transaction.riskFactors);
+          }
+        } catch {
+          parsedFactors = transaction.riskFactors ? [transaction.riskFactors] : [];
+        }
+
         return {
           id: transaction.id,
           senderWalletId: transaction.senderWalletId,
@@ -72,6 +81,13 @@ const getTransactions = async (req, res) => {
           type: transaction.type,
           status: transaction.status,
           description: transaction.description,
+          riskScore: transaction.riskScore ?? null,
+          ruleScore: transaction.ruleScore ?? null,
+          riskFactors: parsedFactors,
+          mlProbability: transaction.mlProbability ?? null,
+          resolutionNotes: transaction.resolutionNotes ?? null,
+          resolvedBy: transaction.resolvedBy ?? null,
+          resolvedAt: transaction.resolvedAt ?? null,
           createdAt: transaction.createdAt,
         };
       }),
@@ -152,6 +168,15 @@ const getTransactionById = async (req, res) => {
     const senderUser = transaction.senderWallet?.user;
     const receiverUser = transaction.receiverWallet?.user;
 
+    let parsedFactors = [];
+    try {
+      if (transaction.riskFactors) {
+        parsedFactors = JSON.parse(transaction.riskFactors);
+      }
+    } catch {
+      parsedFactors = transaction.riskFactors ? [transaction.riskFactors] : [];
+    }
+
     return res.status(200).json({
       transaction: {
         id: transaction.id,
@@ -167,6 +192,13 @@ const getTransactionById = async (req, res) => {
         type: transaction.type,
         status: transaction.status,
         description: transaction.description,
+        riskScore: transaction.riskScore ?? null,
+        ruleScore: transaction.ruleScore ?? null,
+        riskFactors: parsedFactors,
+        mlProbability: transaction.mlProbability ?? null,
+        resolutionNotes: transaction.resolutionNotes ?? null,
+        resolvedBy: transaction.resolvedBy ?? null,
+        resolvedAt: transaction.resolvedAt ?? null,
         createdAt: transaction.createdAt,
       },
     });

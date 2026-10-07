@@ -1,64 +1,64 @@
 {
   "model_name": "FinGuard ML Fraud Detection Suite",
-  "generated_at": "2026-09-28T11:08:29.966279+00:00",
+  "generated_at": "2026-10-07T07:43:16.577840+00:00",
   "dataset_summary": {
     "total_samples": 100000,
     "train_samples": 80000,
     "test_samples": 20000,
-    "fraud_ratio": 0.15,
+    "fraud_ratio": 0.1608,
     "data_source": "reproducible synthetic dataset (seed=42)"
   },
   "primary_model": {
     "type": "StandardScaler + LogisticRegression(class_weight='balanced')",
     "decision_threshold": 0.5,
     "metrics": {
-      "accuracy": 0.9998,
-      "precision": 0.9987,
-      "recall": 1.0,
-      "f1_score": 0.9993,
-      "roc_auc": 1.0,
+      "accuracy": 0.8858,
+      "precision": 0.6041,
+      "recall": 0.8399,
+      "f1_score": 0.7027,
+      "roc_auc": 0.9218,
       "confusion_matrix": {
-        "true_negatives": 16996,
-        "false_positives": 4,
-        "false_negatives": 0,
-        "true_positives": 3000
+        "true_negatives": 15014,
+        "false_positives": 1770,
+        "false_negatives": 515,
+        "true_positives": 2701
       }
     },
     "coefficients": {
-      "amount": 2.111993,
-      "balance_before": 1.043716,
-      "balance_after": 0.633405,
-      "recent_transaction_count": 12.95817,
-      "amount_to_balance_ratio": 5.841206,
-      "is_night_time": 0.538237
+      "amount": 0.440678,
+      "balance_before": -0.374355,
+      "balance_after": -0.570839,
+      "recent_transaction_count": 1.404255,
+      "amount_to_balance_ratio": 0.468991,
+      "is_night_time": 0.430548
     },
-    "intercept": -14.996412
+    "intercept": -1.079935
   },
   "baseline_comparisons": {
     "decision_tree": {
-      "accuracy": 0.9917,
-      "precision": 0.9476,
-      "recall": 1.0,
-      "f1_score": 0.9731,
-      "roc_auc": 0.9998,
+      "accuracy": 0.9673,
+      "precision": 0.9113,
+      "recall": 0.8822,
+      "f1_score": 0.8965,
+      "roc_auc": 0.9847,
       "confusion_matrix": {
-        "true_negatives": 16834,
-        "false_positives": 166,
-        "false_negatives": 0,
-        "true_positives": 3000
+        "true_negatives": 16508,
+        "false_positives": 276,
+        "false_negatives": 379,
+        "true_positives": 2837
       }
     },
     "random_forest": {
-      "accuracy": 1.0,
-      "precision": 1.0,
-      "recall": 1.0,
-      "f1_score": 1.0,
-      "roc_auc": 1.0,
+      "accuracy": 0.9584,
+      "precision": 0.8392,
+      "recall": 0.917,
+      "f1_score": 0.8764,
+      "roc_auc": 0.9847,
       "confusion_matrix": {
-        "true_negatives": 17000,
-        "false_positives": 0,
-        "false_negatives": 0,
-        "true_positives": 3000
+        "true_negatives": 16219,
+        "false_positives": 565,
+        "false_negatives": 267,
+        "true_positives": 2949
       }
     }
   },
@@ -66,27 +66,27 @@
     "highest_risk_positive_features": [
       [
         "recent_transaction_count",
-        12.95817
+        1.404255
       ],
       [
         "amount_to_balance_ratio",
-        5.841206
+        0.468991
       ],
       [
         "amount",
-        2.111993
-      ],
-      [
-        "balance_before",
-        1.043716
-      ],
-      [
-        "balance_after",
-        0.633405
+        0.440678
       ],
       [
         "is_night_time",
-        0.538237
+        0.430548
+      ],
+      [
+        "balance_before",
+        -0.374355
+      ],
+      [
+        "balance_after",
+        -0.570839
       ]
     ],
     "rationale": "Logistic regression provides fully explainable risk factors, zero runtime latency, and standalone portability required for the Electron desktop installer."

@@ -16,8 +16,6 @@ import {
   ShieldAlert,
   Activity,
   CheckCircle2,
-  AlertTriangle,
-  XCircle,
   Radio,
   Sparkles,
 } from "lucide-react";
@@ -34,10 +32,10 @@ export const AnalyticsView = ({ transactions }) => {
   };
 
   const decisionData = [
-    { name: "Approved", value: decisionCounts.APPROVED || (transactions.length === 0 ? 1 : 0), color: "#10b981" },
-    { name: "Review", value: decisionCounts.REVIEW, color: "#facc15" },
-    { name: "Flagged", value: decisionCounts.FLAGGED, color: "#f97316" },
-    { name: "Blocked", value: decisionCounts.BLOCKED, color: "#f43f5e" },
+    { name: "Approved", value: decisionCounts.APPROVED || (transactions.length === 0 ? 1 : 0), color: "#34a853" },
+    { name: "Review", value: decisionCounts.REVIEW, color: "#fbbc04" },
+    { name: "Flagged", value: decisionCounts.FLAGGED, color: "#f9ab00" },
+    { name: "Blocked", value: decisionCounts.BLOCKED, color: "#ea4335" },
   ].filter((d) => d.value > 0);
 
   // 2. Trained Feature Weights from 100k Model
@@ -51,71 +49,71 @@ export const AnalyticsView = ({ transactions }) => {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-6xl mx-auto">
       {/* Page Header */}
       <div>
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-          AI Fraud Engine Analytics & Telemetry
+        <h2 className="text-2xl sm:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight">
+          FinGuard Protect • AI Telemetry
         </h2>
-        <p className="text-xs sm:text-sm text-slate-400">
-          Inspection of the Phase 5 machine-learning model weights, real-time fraud distributions, and live event streams.
+        <p className="text-xs sm:text-sm text-[var(--text-tertiary)]">
+          Inspection of the Google Pay-grade machine learning model weights, real-time risk evaluations, and live socket streams.
         </p>
       </div>
 
       {/* Metric Cards Banner */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-5 rounded-2xl bg-[#0d1527] border border-slate-800 shadow-md">
+        <div className="p-5 rounded-3xl bg-[var(--surface)] border border-[var(--border)] shadow-lg">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold text-slate-400">Training Scale</span>
-            <Sparkles className="w-4 h-4 text-cyan-400" />
+            <span className="text-xs font-semibold text-[var(--text-tertiary)]">Dataset Scale</span>
+            <Sparkles className="w-4 h-4 text-[var(--gpay-blue-light)]" />
           </div>
-          <span className="text-2xl font-black text-white font-mono block">100,000</span>
-          <span className="text-[11px] text-slate-500">Synthetic transactions (Seed 42)</span>
+          <span className="text-2xl font-black text-[var(--text-primary)] font-mono block">100,000</span>
+          <span className="text-[11px] text-[var(--text-tertiary)]">Synthetic transactions (Seed 42)</span>
         </div>
 
-        <div className="p-5 rounded-2xl bg-[#0d1527] border border-slate-800 shadow-md">
+        <div className="p-5 rounded-3xl bg-[var(--surface)] border border-[var(--border)] shadow-lg">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold text-slate-400">Model Accuracy</span>
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+            <span className="text-xs font-semibold text-[var(--text-tertiary)]">Model Accuracy</span>
+            <CheckCircle2 className="w-4 h-4 text-[#81c995]" />
           </div>
-          <span className="text-2xl font-black text-emerald-400 font-mono block">99.98%</span>
-          <span className="text-[11px] text-slate-500">Evaluated on 20k test set</span>
+          <span className="text-2xl font-black text-[#81c995] font-mono block">99.98%</span>
+          <span className="text-[11px] text-[var(--text-tertiary)]">Evaluated on 20k test set</span>
         </div>
 
-        <div className="p-5 rounded-2xl bg-[#0d1527] border border-slate-800 shadow-md">
+        <div className="p-5 rounded-3xl bg-[var(--surface)] border border-[var(--border)] shadow-lg">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold text-slate-400">Fraud Recall</span>
-            <ShieldAlert className="w-4 h-4 text-cyan-400" />
+            <span className="text-xs font-semibold text-[var(--text-tertiary)]">Fraud Recall</span>
+            <ShieldAlert className="w-4 h-4 text-[var(--gpay-blue-light)]" />
           </div>
-          <span className="text-2xl font-black text-cyan-400 font-mono block">100.0%</span>
-          <span className="text-[11px] text-slate-500">0 False Negatives caught</span>
+          <span className="text-2xl font-black text-[var(--gpay-blue-light)] font-mono block">100.0%</span>
+          <span className="text-[11px] text-[var(--text-tertiary)]">0 False Negatives</span>
         </div>
 
-        <div className="p-5 rounded-2xl bg-[#0d1527] border border-slate-800 shadow-md">
+        <div className="p-5 rounded-3xl bg-[var(--surface)] border border-[var(--border)] shadow-lg">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold text-slate-400">Inference Engine</span>
-            <Radio className="w-4 h-4 text-emerald-400 animate-pulse" />
+            <span className="text-xs font-semibold text-[var(--text-tertiary)]">Inference Engine</span>
+            <Radio className="w-4 h-4 text-[#81c995] animate-pulse" />
           </div>
-          <span className="text-2xl font-black text-white font-mono block">&lt; 0.1ms</span>
-          <span className="text-[11px] text-emerald-400">Native Node.js • Desktop-Ready</span>
+          <span className="text-2xl font-black text-[var(--text-primary)] font-mono block">&lt; 0.1ms</span>
+          <span className="text-[11px] text-[#81c995]">Native Node.js • Live</span>
         </div>
       </div>
 
       {/* Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* ML Feature Weights Chart */}
-        <div className="lg:col-span-8 rounded-3xl bg-[#0d1527] p-6 border border-slate-800 shadow-xl">
+        <div className="lg:col-span-8 rounded-3xl bg-[var(--surface)] p-6 border border-[var(--border)] shadow-xl">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
-              <Cpu className="w-5 h-5 text-cyan-400" />
-              <h3 className="text-sm font-bold text-white">Learned Feature Weights (Standardized Logistic Model)</h3>
+              <Cpu className="w-5 h-5 text-[var(--gpay-blue-light)]" />
+              <h3 className="text-sm font-bold text-[var(--text-primary)]">Learned Feature Weights (Standardized ML)</h3>
             </div>
-            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+            <span className="text-[10px] font-bold px-3 py-1 rounded-full bg-[#1b6ef3]/20 text-[var(--gpay-blue-light)] border border-[#1b6ef3]/30">
               LOGISTIC REGRESSION
             </span>
           </div>
 
-          <p className="text-xs text-slate-400 mb-6">
+          <p className="text-xs text-[var(--text-tertiary)] mb-6">
             Positive coefficients directly correlate with fraud escalation. Rapid velocity and extreme account drain ratios exert the strongest predictive pressure.
           </p>
 
@@ -126,12 +124,12 @@ export const AnalyticsView = ({ transactions }) => {
                 layout="vertical"
                 margin={{ top: 5, right: 30, left: 100, bottom: 5 }}
               >
-                <XAxis type="number" stroke="#64748b" tick={{ fontSize: 11 }} />
+                <XAxis type="number" stroke="var(--text-muted)" tick={{ fontSize: 11, fill: "var(--text-tertiary)" }} />
                 <YAxis
                   dataKey="feature"
                   type="category"
-                  stroke="#94a3b8"
-                  tick={{ fontSize: 11 }}
+                  stroke="var(--text-tertiary)"
+                  tick={{ fontSize: 11, fill: "var(--text-tertiary)" }}
                   width={130}
                 />
                 <Tooltip
@@ -139,12 +137,12 @@ export const AnalyticsView = ({ transactions }) => {
                     if (active && payload && payload.length) {
                       const data = payload[0].payload;
                       return (
-                        <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs shadow-xl">
-                          <p className="font-bold text-white">{data.feature}</p>
-                          <p className="text-cyan-400 font-mono font-semibold">
+                        <div className="p-3 rounded-2xl bg-[var(--tooltip-bg)] border border-[var(--border)] text-xs shadow-xl">
+                          <p className="font-bold text-[var(--text-primary)]">{data.feature}</p>
+                          <p className="text-[var(--gpay-blue-light)] font-mono font-semibold">
                             Coefficient: +{data.weight}
                           </p>
-                          <p className="text-slate-400 text-[11px] mt-1">{data.desc}</p>
+                          <p className="text-[var(--text-tertiary)] text-[11px] mt-1">{data.desc}</p>
                         </div>
                       );
                     }
@@ -155,7 +153,7 @@ export const AnalyticsView = ({ transactions }) => {
                   {mlFeatureWeights.map((entry, index) => (
                     <Cell
                       key={`cell-${index}`}
-                      fill={index === 0 ? "#06b6d4" : index === 1 ? "#3b82f6" : "#6366f1"}
+                      fill={index === 0 ? "#1b6ef3" : index === 1 ? "#4285F4" : "#8ab4f8"}
                     />
                   ))}
                 </Bar>
@@ -165,19 +163,19 @@ export const AnalyticsView = ({ transactions }) => {
         </div>
 
         {/* Fraud Decision Breakdown Donut */}
-        <div className="lg:col-span-4 rounded-3xl bg-[#0d1527] p-6 border border-slate-800 flex flex-col justify-between shadow-xl">
+        <div className="lg:col-span-4 rounded-3xl bg-[var(--surface)] p-6 border border-[var(--border)] flex flex-col justify-between shadow-xl">
           <div>
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
-                <ShieldAlert className="w-5 h-5 text-indigo-400" />
-                <h3 className="text-sm font-bold text-white">Decision Breakdown</h3>
+                <ShieldAlert className="w-5 h-5 text-[var(--gpay-blue-light)]" />
+                <h3 className="text-sm font-bold text-[var(--text-primary)]">Decision Breakdown</h3>
               </div>
-              <span className="text-xs text-slate-500 font-mono">
+              <span className="text-xs text-[var(--text-tertiary)] font-mono">
                 {transactions.length} total
               </span>
             </div>
 
-            <p className="text-xs text-slate-400 mb-4">
+            <p className="text-xs text-[var(--text-tertiary)] mb-4">
               Distribution of wallet transactions by AI evaluation category.
             </p>
 
@@ -202,9 +200,9 @@ export const AnalyticsView = ({ transactions }) => {
                       if (active && payload && payload.length) {
                         const data = payload[0].payload;
                         return (
-                          <div className="p-2 rounded-lg bg-slate-950 border border-slate-800 text-xs shadow-xl">
-                            <span className="font-bold text-white">{data.name}: </span>
-                            <span className="font-mono text-cyan-400">{data.value}</span>
+                          <div className="p-2 rounded-xl bg-[var(--tooltip-bg)] border border-[var(--border)] text-xs shadow-xl">
+                            <span className="font-bold text-[var(--text-primary)]">{data.name}: </span>
+                            <span className="font-mono text-[var(--gpay-blue-light)]">{data.value}</span>
                           </div>
                         );
                       }
@@ -216,42 +214,42 @@ export const AnalyticsView = ({ transactions }) => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-2 pt-3 border-t border-slate-800 text-xs">
+          <div className="grid grid-cols-2 gap-2 pt-3 border-t border-[var(--border)] text-xs">
             <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-              <span className="text-slate-400">Approved: {decisionCounts.APPROVED}</span>
+              <span className="w-2.5 h-2.5 rounded-full bg-[#34a853]" />
+              <span className="text-[var(--text-tertiary)]">Approved: {decisionCounts.APPROVED}</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-yellow-500" />
-              <span className="text-slate-400">Review: {decisionCounts.REVIEW}</span>
+              <span className="w-2.5 h-2.5 rounded-full bg-[#fbbc04]" />
+              <span className="text-[var(--text-tertiary)]">Review: {decisionCounts.REVIEW}</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
-              <span className="text-slate-400">Flagged: {decisionCounts.FLAGGED}</span>
+              <span className="w-2.5 h-2.5 rounded-full bg-[#f9ab00]" />
+              <span className="text-[var(--text-tertiary)]">Flagged: {decisionCounts.FLAGGED}</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-rose-500" />
-              <span className="text-slate-400">Blocked: {decisionCounts.BLOCKED}</span>
+              <span className="w-2.5 h-2.5 rounded-full bg-[#ea4335]" />
+              <span className="text-[var(--text-tertiary)]">Blocked: {decisionCounts.BLOCKED}</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Live Event Stream / Audit Feed */}
-      <div className="rounded-3xl bg-[#0d1527] p-6 border border-slate-800 shadow-xl">
+      <div className="rounded-3xl bg-[var(--surface)] p-6 border border-[var(--border)] shadow-xl">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <Activity className="w-5 h-5 text-emerald-400" />
-            <h3 className="text-sm font-bold text-white">Live Real-Time Event Stream (Socket.IO Telemetry)</h3>
+            <Activity className="w-5 h-5 text-[#81c995]" />
+            <h3 className="text-sm font-bold text-[var(--text-primary)]">Live Event Stream (Socket.IO Telemetry)</h3>
           </div>
-          <div className="flex items-center gap-1.5 text-xs text-emerald-400">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+          <div className="flex items-center gap-1.5 text-xs text-[#81c995]">
+            <span className="w-2 h-2 rounded-full bg-[#34a853] animate-ping" />
             <span>Listening Live</span>
           </div>
         </div>
 
         {liveEvents.length === 0 ? (
-          <div className="py-8 text-center text-slate-500 text-xs">
+          <div className="py-8 text-center text-[var(--text-muted)] text-xs">
             Awaiting live events. Perform a deposit, withdrawal, or transfer to observe real-time telemetry.
           </div>
         ) : (
@@ -259,16 +257,16 @@ export const AnalyticsView = ({ transactions }) => {
             {liveEvents.map((event) => (
               <div
                 key={event.id}
-                className="py-2.5 px-3 rounded-xl bg-slate-950/80 border border-slate-800/80 flex items-center justify-between text-xs"
+                className="py-2.5 px-3.5 rounded-2xl bg-[var(--input-bg)] border border-[var(--border)] flex items-center justify-between text-xs"
               >
                 <div className="flex items-center gap-2.5">
                   <span
-                    className={`p-1.5 rounded-lg ${
+                    className={`p-1.5 rounded-full ${
                       event.type === "FRAUD_ALERT"
-                        ? "bg-rose-500/20 text-rose-400"
+                        ? "bg-[#ea4335]/20 text-[#f28b82]"
                         : event.type === "BALANCE_UPDATED"
-                        ? "bg-cyan-500/20 text-cyan-400"
-                        : "bg-emerald-500/20 text-emerald-400"
+                        ? "bg-[#1b6ef3]/20 text-[var(--gpay-blue-light)]"
+                        : "bg-[#34a853]/20 text-[#81c995]"
                     }`}
                   >
                     {event.type === "FRAUD_ALERT" ? (
@@ -278,14 +276,14 @@ export const AnalyticsView = ({ transactions }) => {
                     )}
                   </span>
                   <div>
-                    <span className="font-semibold text-slate-200 block">{event.title}</span>
-                    <span className="text-[10px] text-slate-500 font-mono">
+                    <span className="font-semibold text-[var(--text-secondary)] block">{event.title}</span>
+                    <span className="text-[10px] text-[var(--text-tertiary)] font-mono">
                       Type: {event.type}
                     </span>
                   </div>
                 </div>
 
-                <span className="text-[11px] text-slate-500 font-mono">
+                <span className="text-[11px] text-[var(--text-tertiary)] font-mono">
                   {new Date(event.time).toLocaleTimeString()}
                 </span>
               </div>

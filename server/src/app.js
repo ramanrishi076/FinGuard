@@ -76,8 +76,13 @@ app.get("/api/realtime/status", (req, res) => {
   });
 });
 
+const complianceRoutes = require("./routes/complianceRoutes");
+const bankRoutes = require("./routes/bankRoutes");
+
 app.use("/api/auth", authRoutes);
 app.use("/api/wallet", walletRoutes);
 app.use("/api/transactions", transactionRoutes);
+app.use("/api/compliance", complianceRoutes);
+app.use("/api/banks", bankRoutes);
 
-module.exports = app;
+module.exports = app;

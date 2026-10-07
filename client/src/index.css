@@ -1,19 +1,100 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
-:root {
+/* ========== THEME SYSTEM: CSS Custom Properties ========== */
+
+/* Dark Theme (Default) */
+:root,
+[data-theme="dark"] {
   --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
+
+  /* Google Pay accent colors (shared) */
+  --gpay-blue: #1b6ef3;
+  --gpay-blue-hover: #1558c7;
+  --gpay-blue-light: #8ab4f8;
+  --gpay-blue-muted: #7cacf8;
+
+  /* Surface / Background tokens */
+  --bg: #121316;
+  --surface: #1e1f25;
+  --surface-elevated: #242630;
+  --surface-dim: #18191f;
+  --surface-hover: #2b2d38;
+  --input-bg: #121316;
+
+  /* Border tokens */
+  --border: #2d3139;
+  --border-strong: #353a45;
+  --border-nav: #282a32;
+  --border-nav-active: #3b4150;
+
+  /* Text tokens */
+  --text-primary: #ffffff;
+  --text-secondary: #e2e8f0;
+  --text-tertiary: #94a3b8;
+  --text-muted: #64748b;
+  --text-placeholder: #64748b;
+
+  /* Overlay */
+  --overlay: rgba(0, 0, 0, 0.8);
+  --shadow: rgba(0, 0, 0, 0.75);
+
+  /* Scrollbar */
+  --scrollbar-track: #121316;
+  --scrollbar-thumb: #282a32;
+  --scrollbar-thumb-hover: #3b3e4a;
+
+  /* Nav active pill */
+  --nav-active-bg: #282b34;
+  --nav-inactive-hover: #20222a;
+
+  /* Chart tooltip */
+  --tooltip-bg: #121316;
+}
+
+/* Light Theme */
+[data-theme="light"] {
+  --bg: #f1f3f4;
+  --surface: #ffffff;
+  --surface-elevated: #f1f3f4;
+  --surface-dim: #e8eaed;
+  --surface-hover: #e0e3e7;
+  --input-bg: #f8f9fa;
+
+  --border: #dadce0;
+  --border-strong: #bdc1c6;
+  --border-nav: #dadce0;
+  --border-nav-active: #8ab4f8;
+
+  --text-primary: #202124;
+  --text-secondary: #3c4043;
+  --text-tertiary: #5f6368;
+  --text-muted: #80868b;
+  --text-placeholder: #9aa0a6;
+
+  --overlay: rgba(0, 0, 0, 0.4);
+  --shadow: rgba(0, 0, 0, 0.12);
+
+  --scrollbar-track: #f1f3f4;
+  --scrollbar-thumb: #dadce0;
+  --scrollbar-thumb-hover: #bdc1c6;
+
+  --nav-active-bg: #e8f0fe;
+  --nav-inactive-hover: #f1f3f4;
+
+  --tooltip-bg: #ffffff;
 }
 
 body {
   margin: 0;
   padding: 0;
   font-family: var(--font-sans);
-  background-color: #090d16;
-  color: #f1f5f9;
+  background-color: var(--bg);
+  color: var(--text-secondary);
   min-height: 100vh;
   overflow-x: hidden;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 #root {
@@ -27,26 +108,37 @@ body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #090d16;
+  background: var(--scrollbar-track);
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: var(--scrollbar-thumb);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: var(--scrollbar-thumb-hover);
 }
 
-/* Solid dark container panels - fully opaque and high-contrast */
+/* Google Pay Dark Surface Styles (now themeable) */
 .glass-panel {
-  background-color: #0b111e;
-  border: 1px solid #1e293b;
+  background-color: var(--surface-dim);
+  border: 1px solid var(--border-nav);
 }
 
 .glass-panel-elevated {
-  background-color: #0d1527;
-  border: 1px solid #1e293b;
-  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.85);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 16px 36px -8px var(--shadow);
+}
+
+.gpay-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.gpay-card-elevated {
+  background-color: var(--surface-elevated);
+  border: 1px solid var(--border-strong);
+  box-shadow: 0 16px 36px -8px var(--shadow);
 }
 
 .glow-emerald {
@@ -54,9 +146,20 @@ body {
 }
 
 .glow-cyan {
-  box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.35);
+  box-shadow: 0 0 25px -5px rgba(27, 110, 243, 0.35);
 }
 
 .glow-rose {
-  box-shadow: 0 0 25px -5px rgba(244, 63, 94, 0.4);
+  box-shadow: 0 0 25px -5px rgba(234, 67, 53, 0.4);
+}
+
+/* Theme transition on key elements */
+[data-theme] header,
+[data-theme] footer,
+[data-theme] main,
+[data-theme] .rounded-3xl,
+[data-theme] .rounded-full,
+[data-theme] input,
+[data-theme] button {
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.2s ease;
 }

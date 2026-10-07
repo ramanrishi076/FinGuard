@@ -15,8 +15,13 @@ This directory contains the machine learning fraud detection pipeline for FinGua
 ## Usage
 
 ### Re-generate Dataset
+Vectorized NumPy generator with realistic overlap, hard negatives, and extended behavioral signals:
 ```bash
+# Default (100,000 samples, 15% fraud, CSV format)
 python generate_dataset.py
+
+# Custom configuration with CLI flags
+python generate_dataset.py --samples 250000 --fraud-ratio 0.10 --noise-ratio 0.02 --users 10000 --format csv
 ```
 
 ### Re-train Model
@@ -27,4 +32,9 @@ python train_model.py
 ### Test Native Node.js Predictor
 ```bash
 node -e "const { mlPredictor } = require('./mlPredictor'); console.log(mlPredictor.predict({ amount: 500, balanceBefore: 5000, balanceAfter: 4500 }));"
+```
+
+### Test Integrated Hybrid Engine
+```bash
+node src/services/testFraudEngine.js
 ```

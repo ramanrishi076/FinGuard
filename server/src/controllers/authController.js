@@ -122,6 +122,8 @@ const login = async (req, res) => {
         id: user.id,
         name: user.name,
         email: user.email,
+        role: user.role || "USER",
+        hasPin: Boolean(user.transactionPin),
       },
     });
   } catch (error) {
@@ -269,9 +271,140 @@ const logout = async (req, res) => {
   }
 };
 
+const setTransactionPin = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { pin } = req.body;
+
+    if (!pin || !/^\d{6}$/.test(String(pin))) {
+      return res.status(400).json({
+        message: "Transaction PIN must be a 6-digit number",
+      });
+    }
+
+    const hashedPin = await bcrypt.hash(String(pin), 10);
+    await prisma.user.update({
+      where: { id: userId },
+      data: { transactionPin: hashedPin },
+    });
+
+    return res.status(200).json({
+      message: "Transaction PIN configured successfully",
+      hasPin: true,
+    });
+  } catch (error) {
+    console.error("Set PIN error:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+const getTransactionPinStatus = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { transactionPin: true, role: true },
+    });
+
+    return res.status(200).json({
+      hasPin: Boolean(user?.transactionPin),
+      role: user?.role || "USER",
+    });
+  } catch (error) {
+    console.error("Get PIN status error:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+const verifyTransactionPin = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { pin } = req.body;
+
+    if (!pin) {
+      return res.status(400).json({ message: "PIN is required", valid: false });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { transactionPin: true },
+    });
+
+    if (!user || !user.transactionPin) {
+      return res.status(400).json({
+        message: "No transaction PIN set for this account. Please set a 6-digit PIN in settings.",
+        valid: false,
+      });
+    }
+
+    const isValid = await bcrypt.compare(String(pin), user.transactionPin);
+    if (!isValid) {
+      return res.status(401).json({
+        message: "Incorrect 6-digit Transaction PIN",
+        valid: false,
+      });
+    }
+
+    return res.status(200).json({
+      message: "PIN verified",
+      valid: true,
+    });
+  } catch (error) {
+    console.error("Verify PIN error:", error);
+    return res.status(500).json({ message: "Server error", valid: false });
+  }
+};
+
+const resetTransactionPin = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { password, newPin } = req.body;
+
+    if (!password) {
+      return res.status(400).json({ message: "Account password is required to verify your identity" });
+    }
+
+    if (!newPin || !/^\d{6}$/.test(String(newPin))) {
+      return res.status(400).json({ message: "New Transaction PIN must be a 6-digit number" });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { password: true },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: "Incorrect account password. Verification failed." });
+    }
+
+    const hashedPin = await bcrypt.hash(String(newPin), 10);
+    await prisma.user.update({
+      where: { id: userId },
+      data: { transactionPin: hashedPin },
+    });
+
+    return res.status(200).json({
+      message: "Transaction PIN reset successfully. You can now authorize transfers with your new PIN.",
+      hasPin: true,
+    });
+  } catch (error) {
+    console.error("Reset PIN error:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
   register,
   login,
   refresh,
   logout,
+  setTransactionPin,
+  getTransactionPinStatus,
+  verifyTransactionPin,
+  resetTransactionPin,
 };

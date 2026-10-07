@@ -7,14 +7,36 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
+  id             Int       @id @default(autoincrement())
+  name           String
+  email          String    @unique
+  password       String
+  transactionPin String?
+  role           String    @default("USER")
+  createdAt      DateTime  @default(now())
 
   sessions Session[]
-  wallet Wallet?
+  wallet   Wallet?
+  bankAccounts BankAccount[]
+}
+
+model BankAccount {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  bankName      String
+  bankCode      String   // "SBI", "HDFC", "ICICI", "AXIS", "PNB", "KOTAK", etc.
+  accountNumber String   // e.g. "•••• 4821"
+  accountType   String   @default("SAVINGS") // "SAVINGS" | "CURRENT"
+  ifscCode      String
+  branchName    String?
+  isPrimary     Boolean  @default(false)
+  balance       BigInt   @default(35000)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model Session {
@@ -44,14 +66,21 @@ model Wallet {
 }
 
 model Transaction {
-  id               Int      @id @default(autoincrement())
+  id               Int               @id @default(autoincrement())
   senderWalletId   Int?
   receiverWalletId Int?
   amount           BigInt
   type             TransactionType
   status           TransactionStatus @default(PENDING)
   description      String?
-  createdAt        DateTime @default(now())
+  riskScore        Int?
+  ruleScore        Int?
+  riskFactors      String?
+  mlProbability    Float?
+  resolutionNotes  String?
+  resolvedBy       String?
+  resolvedAt       DateTime?
+  createdAt        DateTime          @default(now())
 
   senderWallet   Wallet? @relation("SenderWallet", fields: [senderWalletId], references: [id])
   receiverWallet Wallet? @relation("ReceiverWallet", fields: [receiverWalletId], references: [id])
@@ -59,6 +88,7 @@ model Transaction {
   @@index([senderWalletId])
   @@index([receiverWalletId])
   @@index([createdAt])
+  @@index([status])
 }
 
 enum TransactionType {

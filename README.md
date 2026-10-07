@@ -10,7 +10,7 @@
 [![Socket.IO](https://img.shields.io/badge/Socket.IO-4.8-010101?logo=socket.io&logoColor=white)](https://socket.io/)
 [![Python](https://img.shields.io/badge/Python-3.13-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![Scikit--Learn](https://img.shields.io/badge/Scikit--Learn-1.6-F7931E?logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
-[![License](https://img.shields.io/badge/License-Author%20Attribution-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-Non--Commercial%20Attribution-red.svg)](LICENSE)
 
 FinGuard is a full-stack, enterprise-grade digital payment and wallet platform modeled after the **Google Pay** design system. It combines deterministic heuristic business rules with an explainable, in-line **Machine Learning Probabilistic Risk Engine** that evaluates transactions in **< 0.1ms** with zero external runtime dependencies.
 
@@ -241,5 +241,8 @@ Visit **`http://localhost:5173`** in your browser.
 ---
 
 ## 📜 License & Authorship
-This project is original intellectual property created and built by **Rishi**.
-Licensed under the FinGuard Software License & Attribution Rights — see the [LICENSE](LICENSE) file for strict authorship protection and non-misrepresentation terms.
+This project is original intellectual property created, designed, and built solely by **Rishi**.
+Licensed under the **FinGuard Strict Attribution & Non-Commercial License** — see [LICENSE](LICENSE) for details.
+- **Plagiarism Strictly Prohibited:** No person or organization may claim authorship, rebrand, or present this work as their own.
+- **Non-Commercial:** Commercial use, enterprise deployment, or monetization without prior written authorization is strictly prohibited.
+- **Attribution Required:** Any personal or educational forks must prominently credit Rishi and link back to this repository.

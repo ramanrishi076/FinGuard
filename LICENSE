@@ -1,45 +1,60 @@
-# FinGuard Software License & Attribution Rights
+# FinGuard Software License & Strict Attribution Rights
 
 Copyright (c) 2026 Rishi (ramanrishi076)
 Repository: https://github.com/ramanrishi076/FinGuard
+Contact / Inquiries: ramanrishi076@gmail.com
 
 ================================================================================
-AUTHORSHIP AND CREATOR RECOGNITION
+1. SOLE AUTHORSHIP & CREATOR ACKNOWLEDGMENT
 ================================================================================
 This software, including all architecture, source code, user interfaces, machine 
-learning fraud pipelines, synthetic datasets, and associated documentation, was 
-originally created, designed, and built by Rishi.
+learning fraud pipelines, synthetic datasets, and documentation, is the original 
+intellectual creation and property of Rishi.
 
 ================================================================================
-TERMS OF USE AND STRICT NON-MISREPRESENTATION CLAUSE
+2. PROHIBITION OF FALSE AUTHORSHIP & PLAGIARISM (STRICT)
 ================================================================================
-Permission is hereby granted to any person obtaining a copy of this software 
-and associated documentation files (the "Software"), to inspect, review, evaluate, 
-fork, and run the Software for personal, educational, or evaluation purposes, 
-subject to the following STRICT conditions:
+No person, entity, or organization may claim, state, imply, or misrepresent 
+that they designed, built, authored, or originated this software or any 
+portion thereof. 
 
-1. PROHIBITION OF FALSE AUTHORSHIP & PLAGIARISM:
-   No person, entity, or organization may claim, state, imply, or misrepresent 
-   that they designed, built, authored, or originated this software or any 
-   portion thereof. You may NOT present this project, its code, architecture, 
-   machine learning models, or visual designs as your own work for academic 
-   credit, portfolios, interviews, corporate submissions, competitions, or 
-   commercial presentations.
-
-2. MANDATORY ATTRIBUTION:
-   The original copyright notice, author credit ("Original Author & Creator: Rishi"), 
-   and this license document MUST be preserved and prominently displayed in all 
-   copies, substantial portions, forks, demonstrations, or derivations of the 
-   Software.
-
-3. ATTRIBUTION IN DERIVATIVE WORKS:
-   Any derivative works, adaptations, or modifications based on this software 
-   must clearly state that they are based on FinGuard, and must prominently 
-   link back to the original author (Rishi) and original repository:
-   https://github.com/ramanrishi076/FinGuard
+Under no circumstances may this project, its code, architecture, machine 
+learning models, or visual designs be presented as your own work for:
+- Academic submissions or degree evaluations
+- Job applications, interview portfolios, or hiring assessments
+- Corporate submissions, presentations, or client pitches
+- Competitions, hackathons, or project showcases
 
 ================================================================================
-DISCLAIMER OF WARRANTY
+3. STRICT COMMERCIAL USE RESTRICTION
+================================================================================
+COMMERCIAL USE IS STRICTLY PROHIBITED WITHOUT PRIOR WRITTEN PERMISSION.
+
+You may NOT:
+- Sell, rent, lease, sub-license, or monetize this software or any portion of it.
+- Integrate or deploy this software in any revenue-generating product, SaaS platform,
+  commercial service, or enterprise banking infrastructure.
+- Use this software or its datasets to train proprietary commercial models or
+  commercial products.
+
+Any commercial deployment, commercial licensing, or enterprise adaptation requires 
+explicit, signed prior written authorization from the author (Rishi).
+
+================================================================================
+4. PERMITTED PERSONAL & EDUCATIONAL USE
+================================================================================
+Permission is granted to inspect, clone, review, and run this software strictly 
+for personal study, non-commercial educational research, and evaluation, provided that:
+
+- MANDATORY ATTRIBUTION: The original copyright notice, creator recognition 
+  ("Original Creator & Author: Rishi"), and this complete license document MUST 
+  be preserved and prominently displayed in all copies, forks, or derivations.
+- DERIVATIVE WORKS: Any personal or academic derivative works must clearly state 
+  they are derived from FinGuard and provide a prominent link to the original 
+  repository: https://github.com/ramanrishi076/FinGuard
+
+================================================================================
+5. DISCLAIMER OF WARRANTY
 ================================================================================
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 

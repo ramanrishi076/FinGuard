@@ -50,13 +50,13 @@ The platform was engineered systematically in 7 distinct development phases:
 
 | Phase | Milestone & Scope | Completion Date | Key Technical Deliverables |
 | :---: | :--- | :---: | :--- |
-| **Phase 1** | **Core Architecture & Authentication** | **Sep 14, 2026** | Express 5 server, bcrypt password hashing, stateless JSON Web Token (JWT) pipeline. |
-| **Phase 2** | **Relational Schema & Session Management** | **Sep 15, 2026** | PostgreSQL schema via Prisma ORM, refresh token rotation, active session revocation. |
-| **Phase 3** | **Wallet Ledger & Peer-to-Peer Transfers** | **Sep 15, 2026** | ACID transactional wallet balance transfers, BigInt currency precision, deposits & withdrawals. |
-| **Phase 4** | **Deterministic Heuristic Fraud Shield** | **Sep 16, 2026** | 4-tier risk heuristic engine (velocity spikes, high amounts, zero-balance depletion, off-hours). |
-| **Phase 5** | **Machine Learning Fraud Engine & Pipeline** | **Sep 28, 2026** | 100,000 synthetic dataset generation (`generate_dataset.py`), scikit-learn models, zero-dependency native Node.js inference engine (`mlPredictor.js`). |
-| **Phase 6** | **High-Performance Caching & WebSockets** | **Sep 28, 2026** | Socket.IO bi-directional streaming for live alerts, resilient in-memory caching with Redis support. |
-| **Phase 7** | **React Desktop UI, Multi-Bank & Vector Emblems** | **Sep 28 – Oct 7, 2026** | Vite + React 19 UI with Google Pay theme, 35+ bank directory, custom SVG vector logos, 6-digit PIN modal, PDF/Excel export, and vectorized dataset pipeline. |
+| **Phase 1** | **Core Architecture & Authentication** | **Aug 12, 2026** | Express 5 server, bcrypt password hashing, stateless JSON Web Token (JWT) pipeline. |
+| **Phase 2** | **Relational Schema & Session Management** | **Aug 21, 2026** | PostgreSQL schema via Prisma ORM, refresh token rotation, active session revocation. |
+| **Phase 3** | **Wallet Ledger & Peer-to-Peer Transfers** | **Aug 30, 2026** | ACID transactional wallet balance transfers, BigInt currency precision, deposits & withdrawals. |
+| **Phase 4** | **Deterministic Heuristic Fraud Shield** | **Sep 10, 2026** | 4-tier risk heuristic engine (velocity spikes, high amounts, zero-balance depletion, off-hours). |
+| **Phase 5** | **Machine Learning Fraud Engine & Pipeline** | **Sep 22, 2026** | 100,000 synthetic dataset generation (`generate_dataset.py`), scikit-learn models, zero-dependency native Node.js inference engine (`mlPredictor.js`). |
+| **Phase 6** | **High-Performance Caching & WebSockets** | **Sep 29, 2026** | Socket.IO bi-directional streaming for live alerts, resilient in-memory caching with Redis support. |
+| **Phase 7** | **React Desktop UI, Multi-Bank & Vector Emblems** | **Oct 07, 2026** | Vite + React 19 UI with Google Pay theme, 35+ bank directory, custom SVG vector logos, 6-digit PIN modal, PDF/Excel export, and vectorized dataset pipeline. |
 
 ---
 

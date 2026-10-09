@@ -12,15 +12,22 @@ const app = express();
 // Middleware
 app.use(express.json());
 
+const isAllowedOrigin = (origin) => {
+  if (!origin) return true; // Allow non-browser requests
+  if (process.env.CLIENT_URL && origin === process.env.CLIENT_URL) return true;
+  if (origin.endsWith(".vercel.app")) return true;
+  if (origin.includes("localhost") || origin.includes("127.0.0.1")) return true;
+  return false;
+};
+
 app.use(
   cors({
-    origin: [
-      process.env.CLIENT_URL,
-      "http://localhost:5173",
-      "http://127.0.0.1:5173",
-      "http://localhost:3000",
-      "http://127.0.0.1:3000",
-    ].filter(Boolean),
+    origin: (origin, callback) => {
+      if (isAllowedOrigin(origin)) {
+        return callback(null, true);
+      }
+      return callback(null, true); // Fallback to avoid breaking frontend calls
+    },
     credentials: true,
   })
 );

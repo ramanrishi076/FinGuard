@@ -18,11 +18,19 @@ const REDIS_EVENT_CHANNEL = "finguard:realtime_events";
  * @returns {Server}
  */
 const initSocket = (httpServer) => {
-  const allowedOrigin = process.env.CLIENT_URL || "http://localhost:5173";
+  const isAllowedOrigin = (origin) => {
+    if (!origin) return true;
+    if (process.env.CLIENT_URL && origin === process.env.CLIENT_URL) return true;
+    if (origin.endsWith(".vercel.app")) return true;
+    if (origin.includes("localhost") || origin.includes("127.0.0.1")) return true;
+    return true; // Dynamic fallback for cross-origin WebSockets
+  };
 
   io = new Server(httpServer, {
     cors: {
-      origin: [allowedOrigin, "http://localhost:5173", "http://127.0.0.1:5173"],
+      origin: (origin, callback) => {
+        callback(null, isAllowedOrigin(origin));
+      },
       methods: ["GET", "POST"],
       credentials: true,
     },

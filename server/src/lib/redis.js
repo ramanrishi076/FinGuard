@@ -110,17 +110,19 @@ class RedisManager {
     }
 
     // If REDIS_URL is provided, or default localhost is enabled
+    const isCloud = Boolean(redisUrl);
     const options = {
       lazyConnect: true,
-      maxRetriesPerRequest: 1,
+      maxRetriesPerRequest: isCloud ? 3 : 1,
       retryStrategy: (times) => {
-        if (times > 2) {
-          // Cease retrying to avoid log spam if Redis is not installed locally
+        if (times > (isCloud ? 5 : 2)) {
+          // Cease retrying to avoid log spam if Redis is not reachable
           return null;
         }
-        return 500;
+        return Math.min(times * 500, 2000);
       },
-      connectTimeout: 1500,
+      connectTimeout: isCloud ? 10000 : 2000,
+      tls: (redisUrl && redisUrl.startsWith("rediss://")) ? { rejectUnauthorized: false } : undefined,
     };
 
     try {

@@ -28,6 +28,7 @@ FinGuard is a full-stack, enterprise-grade digital payment and wallet platform m
 - [System Architecture](#-system-architecture)
 - [Machine Learning Pipeline & Benchmarks](#-machine-learning-pipeline--benchmarks)
 - [Local Installation & Setup Guide](#-local-installation--setup-guide)
+- [100% Free Cloud Deployment Guide](#-100-free-cloud-deployment-guide)
 - [Security & Architectural Highlights](#-security--architectural-highlights)
 
 ---
@@ -228,6 +229,19 @@ Visit **`http://localhost:5173`** in your browser.
 - **Demo User:** `demo@finguard.com` / `password123`
 - **Transaction PIN:** `112233`
 - **Peer User (for transfers):** `alice@finguard.com` / `password123`
+
+---
+
+## ☁️ 100% Free Cloud Deployment Guide
+
+FinGuard is engineered to run seamlessly across zero-cost serverless infrastructure with **$0/month** operational overhead:
+
+- **Frontend:** [Vercel](https://vercel.com) (React 19 + Vite 8 SPA)
+- **Backend:** [Render](https://render.com) (Express 5 + Socket.IO WebSockets)
+- **Database:** [Neon Tech](https://neon.tech) (Serverless PostgreSQL)
+- **Cache & Pub/Sub:** [Upstash](https://upstash.com) (Serverless Redis)
+
+👉 **For the complete step-by-step walkthrough and configuration matrix, see [docs/DEPLOYMENT_GUIDE.md](docs/DEPLOYMENT_GUIDE.md).**
 
 ---
 
